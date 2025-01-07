@@ -1,5 +1,6 @@
 plugins {
     id 'java'
+    id 'application'
 }
 
 group = 'sc.pdg.hnk'
@@ -9,9 +10,26 @@ repositories {
     mavenCentral()
 }
 
+application {
+    mainClass = "sc.pdg.hnk.Main"
+}
+
 dependencies {
     testImplementation platform('org.junit:junit-bom:5.10.0')
     testImplementation 'org.junit.jupiter:junit-jupiter'
+}
+
+jar {
+    // Escludi dipendenze duplicate nell'esportazione
+    duplicatesStrategy = duplicatesStrategy.EXCLUDE
+
+    // Impostazione attributi del MANIFEST.MF e esportazione dipendenze
+    manifest {
+        attributes("Main-Class":"sc.pdg.hnk.Main", "Manifest-Version":"1.0")
+    }
+    from {
+        configurations.runtimeClasspath.collect { it.isDirectory() ? it : zipTree(it) }
+    }
 }
 
 test {

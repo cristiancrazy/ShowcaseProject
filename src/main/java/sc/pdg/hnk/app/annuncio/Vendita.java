@@ -7,10 +7,15 @@ import java.time.LocalDate;
 public class Vendita extends Annuncio {
     private final Double prezzo;
     private final LocalDate scadenza;
+    private final Condizioni stato;
 
+    public enum Condizioni {
+        NUOVO,
+        USATO,
+    }
 
-    public Vendita(String nome, Utente proprietario, String chiave, Double prezzo) {
-        super(nome, proprietario, chiave);
+    public Vendita(String nome, String descrizione , Utente proprietario, String chiave, Double prezzo, Condizioni stato) {
+        super(nome, descrizione,proprietario, chiave);
         this.prezzo = prezzo;
         this.scadenza = LocalDate.now().plusMonths(1);
         this.stato=stato;
@@ -21,6 +26,8 @@ public class Vendita extends Annuncio {
         super(nome, descrizione, proprietario, chiave);
         this.prezzo = prezzo;
         this.scadenza = scadenza;
+        this.descrizione = descrizione;
+        this.stato=stato;
     }
 
 

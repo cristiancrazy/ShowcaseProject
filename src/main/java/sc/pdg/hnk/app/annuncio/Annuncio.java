@@ -21,6 +21,7 @@ public abstract class Annuncio implements Serializable {
         this.proprietario = proprietario;
         this.chiave = chiave;
         this.IDAnnuncio = nuovoID();
+        this.descrizione = descrizione;
     }
 
     private String nuovoID(){

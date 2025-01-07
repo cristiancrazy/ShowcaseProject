@@ -7,6 +7,7 @@ import java.security.NoSuchAlgorithmException;
 import java.util.HashMap;
 import java.util.Objects;
 
+//
 public class Utente implements Serializable {
     /* Lista utenti del programma */
     private static HashMap<String, Utente> UserList = new HashMap<>();

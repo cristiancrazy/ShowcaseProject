@@ -5,9 +5,9 @@ import sc.pdg.hnk.app.utente.Utente;
 public class Acquisto extends Annuncio {
     private Double budget; // Limite superiore
 
-    public Acquisto(String nome, Utente proprietario, String chiave, Double budget){
-        super(nome, proprietario, chiave);
+    public Acquisto(String nome, String descrizione, Utente proprietario, String chiave, Double budget, Double min){
+        super(nome, descrizione, proprietario, chiave);
         this.budget = budget;
+        this.min = min;
     }
-
 }

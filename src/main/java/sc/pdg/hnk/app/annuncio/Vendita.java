@@ -13,14 +13,23 @@ public class Vendita extends Annuncio {
         super(nome, proprietario, chiave);
         this.prezzo = prezzo;
         this.scadenza = LocalDate.now().plusMonths(1);
-
+        this.stato=stato;
     }
 
 
-    public Vendita(String nome, Utente proprietario, String chiave, Double prezzo, LocalDate scadenza) {
-        super(nome, proprietario, chiave);
+    public Vendita(String nome, String descrizione, Utente proprietario, String chiave, Double prezzo, LocalDate scadenza, Condizioni stato) {
+        super(nome, descrizione, proprietario, chiave);
         this.prezzo = prezzo;
         this.scadenza = scadenza;
     }
 
+
+    // Check se è scaduto
+    public boolean scaduto(){
+        return this.scadenza.isBefore(LocalDate.now());
+    }
+
+    public String getStato(){
+        return this.stato.name();
+    }
 }

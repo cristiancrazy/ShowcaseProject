@@ -12,10 +12,11 @@ import java.time.format.DateTimeFormatter;
 public abstract class Annuncio implements Serializable {
     private final String IDAnnuncio; // Identificativo univoco dell'annuncio
     protected String nome;
+    protected String descrizione;
     protected Utente proprietario;
     protected String chiave; // Stringa di parole chiave
 
-    public Annuncio(String nome, Utente proprietario, String chiave){
+    public Annuncio(String nome, String descrizione, Utente proprietario, String chiave){
         this.nome = nome;
         this.proprietario = proprietario;
         this.chiave = chiave;
@@ -27,10 +28,9 @@ public abstract class Annuncio implements Serializable {
         String hash = "";
         try{
             hash = new String(MessageDigest.getInstance("SHA-256").digest(ldt.getBytes(StandardCharsets.UTF_8)));
-        }catch (NoSuchAlgorithmException ignored){};
+        }catch (NoSuchAlgorithmException ignored){}
         return hash;
     }
-
 
     public String getIDAnnuncio() {
         return IDAnnuncio;

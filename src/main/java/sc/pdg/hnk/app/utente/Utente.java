@@ -7,7 +7,7 @@ import java.security.NoSuchAlgorithmException;
 import java.util.HashMap;
 import java.util.Objects;
 
-//
+
 public class Utente implements Serializable {
     /* Lista utenti del programma */
     private static HashMap<String, Utente> UserList = new HashMap<>();
@@ -46,7 +46,7 @@ public class Utente implements Serializable {
         try{
             MessageDigest digest = MessageDigest.getInstance("SHA-256");
             hash = new String(digest.digest(password.getBytes(StandardCharsets.UTF_8)));
-        }catch (NoSuchAlgorithmException ignored){};
+        }catch (NoSuchAlgorithmException ignored){}
         return hash;
     }
 
@@ -56,7 +56,6 @@ public class Utente implements Serializable {
      * @param email la mail dell'utente
      * @param nome il nome dell'utente
      */
-
     private Utente(String password,String email, String nome){
         this.email=email;
         this.password= passwordHash(password);

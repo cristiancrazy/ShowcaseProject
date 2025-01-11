@@ -8,23 +8,56 @@ import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.*;
 
+/**
+ * Super-classe astratta che contiene
+ * le informazioni di base degli annunci di acquisto e di vendita.
+ */
 public abstract class Annuncio implements Serializable {
     private final String IDAnnuncio; // Identificativo univoco dell'annuncio
     protected String nome;
     protected String descrizione;
     protected Utente proprietario;
-    protected String chiave; // Stringa di parole chiave
+    protected Set<String> chiavi; // Stringa di parole chiave
 
-    public Annuncio(String nome, String descrizione, Utente proprietario, String chiave){
+    /**
+     * Creazione dell'annuncio.
+     * @param nome nome dell'annuncio
+     * @param descrizione descrizione dell'annuncio
+     * @param proprietario specifica l'utente proprietario dell'annuncio
+     * @param chiavi stringa di parole chiave separate da virgola.
+     */
+    public Annuncio(String nome, String descrizione, Utente proprietario, String chiavi){
         this.nome = nome;
         this.proprietario = proprietario;
-        this.chiave = chiave;
+        this.chiavi = chiaviToLista(chiavi);
         this.IDAnnuncio = nuovoID();
         this.descrizione = descrizione;
     }
 
-    private String nuovoID(){
+    /**
+     * Aggiunge una nuova parola chiave all'annuncio
+     * @param chiave nuova parola chiave
+     */
+    public void aggiungiChiave(String chiave){
+        this.chiavi.add(chiave);
+    }
+
+    /**
+     * Effettua lo splitting di una stringa di parole chiave
+     * @param chiavi stringa di parole chiave separate da virgola.
+     * @return restituisce un set di parole chiave
+     */
+    private static Set<String> chiaviToLista(String chiavi){
+        return new HashSet<>(Arrays.asList(chiavi.split(",")));
+    }
+
+    /**
+     * Crea un nuovo ID univoco da associare all'annuncio.
+     * @return l'ID dell'annuncio come stringa
+     */
+    private static String nuovoID(){
         String ldt = LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd-H:m:s:S.n"));
         String hash = "";
         try{
@@ -33,7 +66,28 @@ public abstract class Annuncio implements Serializable {
         return hash;
     }
 
+    /**
+     * Verifica se l'utente è proprietario dell'annuncio
+     * @param p l'utente da verificare
+     * @return restituisce true se l'utente è il proprietario
+     */
+    public boolean isProprietario(Utente p){
+        return p.equals(proprietario);
+    }
+
+    /**
+     * Restituisce l'ID univoco dell'annuncio
+     * @return l'ID dell'annuncio come stringa.
+     */
     public String getIDAnnuncio() {
         return IDAnnuncio;
+    }
+
+    /**
+     * Restituisce il set di parole chiave dell'annuncio
+     * @return set di stringhe di parole chiave.
+     */
+    public Set<String> getChiavi() {
+        return chiavi;
     }
 }

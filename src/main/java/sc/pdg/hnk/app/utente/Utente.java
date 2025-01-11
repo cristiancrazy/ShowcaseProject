@@ -7,7 +7,11 @@ import java.security.NoSuchAlgorithmException;
 import java.util.HashMap;
 import java.util.Objects;
 
-
+/**
+ * Utente rappresenta un utente all'interno dell'applicazione.
+ * Offre metodi che permettono di creare ed effettuare operazioni con l'utente,
+ * oltre a contenere la lista degli utenti.
+ */
 public class Utente implements Serializable {
     /* Lista utenti del programma */
     private static HashMap<String, Utente> UserList = new HashMap<>();
@@ -16,6 +20,14 @@ public class Utente implements Serializable {
     private final String password; // Hashed password
     private final String nome;
 
+    /**
+     * Creazione di un nuovo utente e inserimento dell'utente nella
+     * lista degli utenti dell'applicazione.
+     * @param password password del nuovo utente
+     * @param email email del nuovo utente
+     * @param nome nome del nuovo utente
+     * @return restituisce l'oggetto Utente
+     */
     public static Utente creaUtente(String password,String email, String nome) {
         // Istanza del nuovo utente
         Utente var = new Utente(password, email, nome);
@@ -26,6 +38,14 @@ public class Utente implements Serializable {
         return var;
     }
 
+    /**
+     * Funzione che permette di effettuare il login dell'utente
+     * @param email l'email dell'utente
+     * @param password la password dell'utente
+     * @return restituisce l'oggetto utente a cui fanno riferimento email e password
+     * @throws PasswordException lanciata se l'utente esiste ma la password non è corretta
+     * @throws UserListException lanciata se l'utente non esiste nella lista utenti dell'app.
+     */
     public static Utente loginUtente(String email,String password) throws PasswordException, UserListException {
         Utente utente = UserList.get(email);
 
@@ -40,7 +60,11 @@ public class Utente implements Serializable {
         }
     }
 
-
+    /**
+     * Effettua l'operazione di HASH della password con SHA-256
+     * @param password la password dell'utente
+     * @return restituisce la rappresentazione in stringa dall'operazione di HASH
+     */
     private static String passwordHash(String password){
         String hash = "";
         try{
@@ -62,9 +86,27 @@ public class Utente implements Serializable {
         this.nome=nome;
     }
 
+    /**
+     * Restituisce informazioni utili alla stampa dei dati utente
+     * @return stringa di informazioni dell'utente.
+     */
     @Override
     public String toString() {
         return String.format("Email: %s\nNome: %s", this.email, this.nome);
     }
 
+    /**
+     * Restituisce i dati della lista utenti
+     * @return la lista utenti
+     */
+    public static HashMap<String, Utente> getUserList() {
+        return UserList;
+    }
+    /**
+     * Setta la userlist dopo la lettura dei dati
+     * @param userList la lista utenti
+     */
+    public static void setUserList(HashMap<String, Utente> userList) {
+        UserList = userList;
+    }
 }

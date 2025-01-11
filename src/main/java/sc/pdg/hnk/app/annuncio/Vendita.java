@@ -4,26 +4,55 @@ import sc.pdg.hnk.app.utente.Utente;
 
 import java.time.LocalDate;
 
+/**
+ * Vendita permette di rappresentare e operare su informazioni
+ * aggiuntive legate agli Annunci di vendita.
+ */
 public class Vendita extends Annuncio {
     private final Double prezzo;
     private final LocalDate scadenza;
     private final Condizioni stato;
 
+    /**
+     * Rappresenta le condizioni dell'oggetto
+     * messo in vendita.
+     */
     public enum Condizioni {
         NUOVO,
+        COME_NUOVO,
         USATO,
+        MOLTO_USATO,
+        NON_FUNZIONANTE
     }
 
-    public Vendita(String nome, String descrizione , Utente proprietario, String chiave, Double prezzo, Condizioni stato) {
-        super(nome, descrizione,proprietario, chiave);
+    /**
+     * Creazione dell'annuncio di vendita
+     * @param nome nome dell'annuncio
+     * @param descrizione descrizione dell'annuncio
+     * @param proprietario specifica l'utente proprietario dell'annuncio
+     * @param chiavi stringa di parole chiave separate da virgola.
+     * @param prezzo prezzo dell'oggetto in vendita
+     * @param stato stato di usura dell'oggetto in vendita.
+     */
+    public Vendita(String nome, String descrizione , Utente proprietario, String chiavi, Double prezzo, Condizioni stato) {
+        super(nome, descrizione,proprietario, chiavi);
         this.prezzo = prezzo;
         this.scadenza = LocalDate.now().plusMonths(1);
         this.stato=stato;
     }
 
-
-    public Vendita(String nome, String descrizione, Utente proprietario, String chiave, Double prezzo, LocalDate scadenza, Condizioni stato) {
-        super(nome, descrizione, proprietario, chiave);
+    /**
+     * Creazione dell'annuncio di vendita
+     * @param nome nome dell'annuncio
+     * @param descrizione descrizione dell'annuncio
+     * @param proprietario specifica l'utente proprietario dell'annuncio
+     * @param chiavi stringa di parole chiave separate da virgola.
+     * @param prezzo prezzo dell'oggetto in vendita
+     * @param scadenza data di scadenza dell'annuncio in vendita
+     * @param stato stato di usura dell'oggetto in vendita
+     */
+    public Vendita(String nome, String descrizione, Utente proprietario, String chiavi, Double prezzo, LocalDate scadenza, Condizioni stato) {
+        super(nome, descrizione, proprietario, chiavi);
         this.prezzo = prezzo;
         this.scadenza = scadenza;
         this.descrizione = descrizione;
@@ -31,12 +60,19 @@ public class Vendita extends Annuncio {
     }
 
 
-    // Check se è scaduto
+    /**
+     * Verifica se l'annuncio è scaduto.
+     * @return true se l'annuncio è già scaduto.
+     */
     public boolean scaduto(){
         return this.scadenza.isBefore(LocalDate.now());
     }
 
+    /**
+     * Restituisce lo stato dell'oggetto messo in vendita
+     * @return stato dell'oggetto come stringa.
+     */
     public String getStato(){
-        return this.stato.name();
+        return this.stato.name().replace("_", " ");
     }
 }

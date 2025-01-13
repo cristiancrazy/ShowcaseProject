@@ -12,9 +12,12 @@ import sc.pdg.hnk.app.utente.UserException;
 import sc.pdg.hnk.app.utente.UserListException;
 import sc.pdg.hnk.app.utente.Utente;
 
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.HashMap;
 import java.util.Objects;
 import java.util.Scanner;
+import java.util.concurrent.TimeUnit;
 
 public class ComandiCLI {
 
@@ -56,6 +59,9 @@ public class ComandiCLI {
         }
     }
 
+    /**
+     * Pulisce lo schermo dai caratteri delle precedenti azioni
+     */
     private void pulisciSchermo(){
         System.out.println("\033[H\033[2J");
         System.out.flush();
@@ -157,7 +163,9 @@ public class ComandiCLI {
         }
     }
 
-
+    /**
+     * Mostra il MenuUtente Permettendo la selezione delle relative funzionalità
+     */
     private void mostraMenuAnnunci(){
         boolean ok = false;
 
@@ -282,9 +290,16 @@ public class ComandiCLI {
 
     }
 
+    /**
+     * Questo metodo permette l'inserimento di un nuovo annuncio in bacheca
+     */
     private void inserimentoAnnuncio(){
         boolean ok = false;
         boolean ook = false;
+        String nome,descrizione,chiavi;
+        double prezzo,max,min;
+        LocalDate data=null;
+        DateTimeFormatter dateFormat = DateTimeFormatter.ofPattern("M/d/yyyy");
 
         pulisciSchermo();
 
@@ -296,17 +311,23 @@ public class ComandiCLI {
         System.out.print(": ");
 
         while(!ok) {
-            String nome,descrizione,chiavi;
-            double prezzo;
             switch (scanner.nextLine()) {
                 case "1" -> {
                     Vendita.Condizioni condizione=Vendita.Condizioni.NUOVO;
+
+                    //Nome
                     System.out.println("inserire il nome dell'annuncio");
                     nome = scanner.nextLine();
+
+                    //Descrizione
                     System.out.println("inserire la descrizione dell'annuncio");
                     descrizione = scanner.nextLine();
+
+                    //Prezzo
                     System.out.println("inserire il prezzo dell'annuncio");
                     prezzo = scanner.nextDouble();
+
+                    //Stato
                     System.out.println("inserire lo stato dell'oggetto");
                     System.out.println("1\tNuovo");
                     System.out.println("2\tCome Nuovo");
@@ -340,17 +361,66 @@ public class ComandiCLI {
                         }
 
                     }
+
+                    //chiavi
                     System.out.println("imposta le parole chiave separate da ,");
                     chiavi=scanner.nextLine();
-                    Bacheca.aggiungiAnnuncio(new Vendita(nome,descrizione,sessione.getCurrentUser(),chiavi,prezzo,condizione));
+
+                    //data scadenza
+                    System.out.println("imposta la data di scadenza");
+                    data=LocalDate.parse("Inserisci la data con formato (Mese/Giorno/Anno)",dateFormat);
+
+                    Bacheca.aggiungiAnnuncio(new Vendita(nome,descrizione,sessione.getCurrentUser(),chiavi,prezzo,data,condizione));
+                    ok = true;
+                    System.out.println("Annuncio inserito correttamente");
+                    try {
+                        TimeUnit.SECONDS.sleep(3);
+                    } catch (InterruptedException e) {
+                        mostraMenuPrincipale();
+                    }
                 }
 
                 case "2" -> {
+                    //Nome annuncio
+                    System.out.println("inserire il nome");
+                    nome=scanner.nextLine();
 
+                    //Descrizione annuncio
+                    System.out.println("inserire la descrizione");
+                    descrizione=scanner.nextLine();
 
+                    //inserimento chiavi sottoforma di stringa con separatore
+                    System.out.println("inserire le chiavi separate da ,");
+                    chiavi=scanner.nextLine();
+
+                    //inserimento prezzo massimo
+                    System.out.println("inserire il prezzo massimo da spendere");
+                    max=scanner.nextDouble();
+
+                    //inserimento prezzo minimo
+                    System.out.println("inserire il prezzo minimo da spendere");
+                    min=scanner.nextDouble();
+
+                    Bacheca.aggiungiAnnuncio(new Acquisto(nome,descrizione,sessione.getCurrentUser(),chiavi,max,min));
+                    System.out.println("Annuncio inserito correttamente");
+                    ok=true;
+                    try {
+                        TimeUnit.SECONDS.sleep(3);
+                    } catch (InterruptedException e) {
+                        mostraMenuUtente();
+                    }
+                    pulisciSchermo();
+                    System.out.println("ecco qui tutti gli annunci che coincidono con le chiavi inserite");
+                    Bacheca.ricerca(Annuncio.chiaviToLista(chiavi)).forEach(System.out::println);
+                    System.out.println("Premi invio per continuare");
+                    scanner.nextLine();
+                    pulisciSchermo();
+                    mostraMenuPrincipale();
                 }
 
                 case "3" -> {
+                    pulisciSchermo();
+                    mostraMenuPrincipale();
 
                 }
 
@@ -390,6 +460,9 @@ public class ComandiCLI {
         }
     }
 
+    /**
+     * Permette la eliminazione di un annuncio da bacheca se di proprietà dell'utente
+     */
     private void rimuoviAnnuncio(){
         boolean ok = false;
         int selezionato;

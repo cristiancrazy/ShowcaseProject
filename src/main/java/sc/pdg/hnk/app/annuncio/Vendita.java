@@ -29,7 +29,7 @@ public class Vendita extends Annuncio implements Serializable {
     }
 
     /**
-     * Creazione dell'annuncio di vendita
+     * Creazione dell'annuncio di vendita se non è specificata la data di scadenza
      * @param nome nome dell'annuncio
      * @param descrizione descrizione dell'annuncio
      * @param proprietario specifica l'utente proprietario dell'annuncio

@@ -418,6 +418,7 @@ public class ComandiCLI {
                     mostraMenuPrincipale();
                 }
 
+
                 case "3" -> {
                     pulisciSchermo();
                     mostraMenuPrincipale();

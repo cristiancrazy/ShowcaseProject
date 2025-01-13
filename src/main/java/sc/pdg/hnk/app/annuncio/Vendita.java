@@ -28,6 +28,7 @@ public class Vendita extends Annuncio implements Serializable {
         NON_FUNZIONANTE
     }
 
+
     /**
      * Creazione dell'annuncio di vendita se non è specificata la data di scadenza
      * @param nome nome dell'annuncio

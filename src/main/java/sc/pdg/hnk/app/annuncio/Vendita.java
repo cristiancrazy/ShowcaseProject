@@ -2,6 +2,7 @@ package sc.pdg.hnk.app.annuncio;
 
 import sc.pdg.hnk.app.utente.Utente;
 
+import java.io.Serializable;
 import java.time.LocalDate;
 
 /**
@@ -9,7 +10,7 @@ import java.time.LocalDate;
  * aggiuntive legate agli Annunci di vendita.
  * @author Cristian, Simone
  */
-public class Vendita extends Annuncio {
+public class Vendita extends Annuncio implements Serializable {
 
     private final Double prezzo;
     private final LocalDate scadenza;
@@ -76,5 +77,10 @@ public class Vendita extends Annuncio {
      */
     public String getStato(){
         return this.stato.name().replace("_", " ");
+    }
+
+    @Override
+    public String toString() {
+        return String.format("Vendita: %s\n\t%s\n\tPrezzo: %.2f €\n\tChiavi:%s\n\tDi: %s\n", nome, descrizione, prezzo, String.join(",", chiavi), proprietario);
     }
 }

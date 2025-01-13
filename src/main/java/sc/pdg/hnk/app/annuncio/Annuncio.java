@@ -51,7 +51,7 @@ public abstract class Annuncio implements Serializable {
      * @param chiavi stringa di parole chiave separate da virgola.
      * @return restituisce un set di parole chiave
      */
-    private static Set<String> chiaviToLista(String chiavi){
+    public static Set<String> chiaviToLista(String chiavi){
         return new HashSet<>(Arrays.asList(chiavi.split(",")));
     }
 

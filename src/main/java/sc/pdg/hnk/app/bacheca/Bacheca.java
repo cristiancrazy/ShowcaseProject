@@ -14,7 +14,7 @@ import java.util.*;
  * che consentono di gestire le funzioni della bacheca.
  * @author Cristian, Simone
  */
-public class Bacheca implements Serializable, Iterable<Annuncio> {
+public class Bacheca implements Iterable<Annuncio> {
 
     private static List<Annuncio> bacheca = new ArrayList<>();
 
@@ -48,21 +48,21 @@ public class Bacheca implements Serializable, Iterable<Annuncio> {
 
     /**
      * Filtraggio annunci per tipo
-     * @param annunci Lista di annunci in input
+     * @param annunci Lista di annunci
      * @param tipo tipo sul quale effettuare il filtraggio, solo figli di annuncio
      * @return Lista di annunci filtrata
      */
-    private static List<Annuncio> filtraTipo(List<Annuncio> annunci, Class<? extends Annuncio> tipo){
+    public static List<Annuncio> filtraTipo(List<Annuncio> annunci, Class<? extends Annuncio> tipo){
         return annunci.stream().filter(tipo::isInstance).toList();
     }
 
     /**
      * Ricerca degli annunci contenenti tutte le chiavi
-     * @param annunci Lista di annunci in input
+     * @param annunci Lista di annunci
      * @param chiavi Set di chiavi per la ricerca
      * @return Lista di annunci risultante
      */
-    private static List<Annuncio> ricerca(List<Annuncio> annunci, Set<String> chiavi){
+    public static List<Annuncio> ricerca(List<Annuncio> annunci, Set<String> chiavi){
         List<Annuncio> trovati = new ArrayList<>();
 
         for (Annuncio a : annunci){
@@ -77,7 +77,7 @@ public class Bacheca implements Serializable, Iterable<Annuncio> {
      * Rimuove un annuncio dell'utente tramite ID
      * @param IDAnnuncio Stringa contenente l'id dell'annuncio
      * @param proprietario Utente che sta tentando di rimuovere l'annuncio
-     * @return true quando viene rimosso l'utente false quando l'annuncio non esiste
+     * @return true quando viene rimosso, false quando l'annuncio non esiste
      * @throws RemoveException eccezione generata quando l'utente non è il proprietario dell'annuncio
      */
     public static boolean rimuoviAnnuncio(String IDAnnuncio, Utente proprietario) throws RemoveException {
@@ -98,7 +98,7 @@ public class Bacheca implements Serializable, Iterable<Annuncio> {
     /**
      * Funzione che serializza su file la bacheca e la lista utenti
      * @param file path del file dove viene effettuato il salvataggio
-     * @throws BachecaIOException Eccezione generata da un errore di Input Output
+     * @throws BachecaIOException Eccezione generata da un errore di IO
      */
     public static void salvataggio(Path file) throws BachecaIOException{
         try(ObjectOutputStream out = new ObjectOutputStream(new FileOutputStream(file.toFile()))) {
@@ -114,19 +114,19 @@ public class Bacheca implements Serializable, Iterable<Annuncio> {
     /**
      * Funzione che ricarica da file la bacheca e la lista utenti
      * @param file path del file dove vengono caricati i dati
-     * @throws BachecaIOException Eccezione generata da un errore di Input Output
-     * @throws BachecaParsingException Eccezione generata da un errore di lettura a seguito di un possibile errore di
-     * scrittura
+     * @throws BachecaIOException Eccezione generata da un errore di IO
+     * @throws BachecaNotFoundException Eccezione generata dalla mancanza del file nel path specificato
+     * @throws BachecaParsingException Eccezione generata da un errore di lettura del file
      */
     @SuppressWarnings("unchecked")
-    public static void recupero(Path file) throws BachecaIOException, BachecaParsingException{
+    public static void recupero(Path file) throws BachecaIOException, BachecaNotFoundException, BachecaParsingException{
         try(ObjectInputStream in = new ObjectInputStream(new FileInputStream(file.toFile()))) {
             bacheca = (List<Annuncio>) in.readObject();
             Utente.setUserList((HashMap<String, Utente>) in.readObject());
         } catch (FileNotFoundException e) {
-            throw new BachecaIOException("Errore IO - esportazione bacheca/utenti: file non trovato.");
+            throw new BachecaNotFoundException("Errore IO - importazione bacheca/utenti: file non trovato.");
         } catch (IOException e) {
-            throw new BachecaIOException("Errore IO - esportazione bacheca/utenti.");
+            throw new BachecaIOException("Errore IO - importazione bacheca/utenti.");
         } catch (ClassNotFoundException e) {
             throw new BachecaParsingException("Errore importazione bacheca/utenti.");
         }
@@ -166,5 +166,13 @@ public class Bacheca implements Serializable, Iterable<Annuncio> {
             ++this.indice;
             return attuale;
         }
+    }
+
+    /**
+     * Ottenimento della bacheca globale degli annunci
+     * @return restituisce una lista con tutti gli annunci della bacheca
+     */
+    public static List<Annuncio> getBacheca() {
+        return bacheca;
     }
 }

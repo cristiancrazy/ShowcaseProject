@@ -28,16 +28,19 @@ public class Utente implements Serializable {
      * @param password password del nuovo utente
      * @param email email del nuovo utente
      * @param nome nome del nuovo utente
+     * @throws UserListException nel caso in cui l'utente esiste già.
      * @return restituisce l'oggetto Utente
      */
-    public static Utente creaUtente(String password,String email, String nome) {
+    public static Utente creaUtente(String password,String email, String nome) throws UserListException {
         // Istanza del nuovo utente
-        Utente var = new Utente(password, email, nome);
+        Utente u = new Utente(password, email, nome);
 
         // Aggiunta alla mappa
-        UserList.put(email, var);
+        if (UserList.putIfAbsent(email, u) != null){
+            throw new UserListException("L'utente esiste già");
+        }
 
-        return var;
+        return u;
     }
 
     /**
@@ -94,7 +97,7 @@ public class Utente implements Serializable {
      */
     @Override
     public String toString() {
-        return String.format("Email: %s\nNome: %s", this.email, this.nome);
+        return String.format("%s", this.nome);
     }
 
     /**

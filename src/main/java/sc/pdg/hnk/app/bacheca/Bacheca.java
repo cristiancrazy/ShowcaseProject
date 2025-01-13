@@ -88,7 +88,6 @@ public class Bacheca implements Serializable, Iterable<Annuncio> {
                     bacheca.remove(a);
                     return true;
                 }else{
-                    // False perché l
                     throw new RemoveException("L'utente non è il proprietario dell'annuncio");
                 }
             }

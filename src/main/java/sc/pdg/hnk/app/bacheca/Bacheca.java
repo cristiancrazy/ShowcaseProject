@@ -12,9 +12,9 @@ import java.util.*;
 /**
  * Bacheca contiene la lista principale di annunci e tutti i metodi
  * che consentono di gestire le funzioni della bacheca.
+ * @author Cristian, Simone
  */
 public class Bacheca implements Serializable, Iterable<Annuncio> {
-
 
     private static List<Annuncio> bacheca = new ArrayList<>();
 
@@ -73,11 +73,10 @@ public class Bacheca implements Serializable, Iterable<Annuncio> {
         return trovati;
     }
 
-
     /**
      * Rimuove un annuncio dell'utente tramite ID
-     * @param IDAnnuncio Stringa in input contenente l'id dell'annuncio
-     * @param proprietario Utente che stà tentando di rimuovere l'annuncio
+     * @param IDAnnuncio Stringa contenente l'id dell'annuncio
+     * @param proprietario Utente che sta tentando di rimuovere l'annuncio
      * @return true quando viene rimosso l'utente false quando l'annuncio non esiste
      * @throws RemoveException eccezione generata quando l'utente non è il proprietario dell'annuncio
      */
@@ -120,6 +119,7 @@ public class Bacheca implements Serializable, Iterable<Annuncio> {
      * @throws BachecaParsingException Eccezione generata da un errore di lettura a seguito di un possibile errore di
      * scrittura
      */
+    @SuppressWarnings("unchecked")
     public static void recupero(Path file) throws BachecaIOException, BachecaParsingException{
         try(ObjectInputStream in = new ObjectInputStream(new FileInputStream(file.toFile()))) {
             bacheca = (List<Annuncio>) in.readObject();

@@ -7,8 +7,10 @@ import java.time.LocalDate;
 /**
  * Vendita permette di rappresentare e operare su informazioni
  * aggiuntive legate agli Annunci di vendita.
+ * @author Cristian, Simone
  */
 public class Vendita extends Annuncio {
+
     private final Double prezzo;
     private final LocalDate scadenza;
     private final Condizioni stato;

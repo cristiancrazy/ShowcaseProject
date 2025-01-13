@@ -13,8 +13,10 @@ import java.util.*;
 /**
  * Super-classe astratta che contiene
  * le informazioni di base degli annunci di acquisto e di vendita.
+ * @author Cristian, Simone
  */
 public abstract class Annuncio implements Serializable {
+
     private final String IDAnnuncio; // Identificativo univoco dell'annuncio
     protected String nome;
     protected String descrizione;

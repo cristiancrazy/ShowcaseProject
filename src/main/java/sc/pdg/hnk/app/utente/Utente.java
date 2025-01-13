@@ -11,8 +11,10 @@ import java.util.Objects;
  * Utente rappresenta un utente all'interno dell'applicazione.
  * Offre metodi che permettono di creare ed effettuare operazioni con l'utente,
  * oltre a contenere la lista degli utenti.
+ * @author Cristian, Simone
  */
 public class Utente implements Serializable {
+
     /* Lista utenti del programma */
     private static HashMap<String, Utente> UserList = new HashMap<>();
 
@@ -102,8 +104,9 @@ public class Utente implements Serializable {
     public static HashMap<String, Utente> getUserList() {
         return UserList;
     }
+
     /**
-     * Setta la userlist dopo la lettura dei dati
+     * Setta la lista utenti dopo la lettura dei dati
      * @param userList la lista utenti
      */
     public static void setUserList(HashMap<String, Utente> userList) {

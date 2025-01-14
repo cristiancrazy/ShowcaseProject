@@ -14,16 +14,35 @@ public class Acquisto extends Annuncio implements Serializable {
     private final Double max; // Limite superiore
     private final Double min; //Limite inferiore
 
+    /**
+     * Costruttore della classe
+     * @param nome nome dell'annuncio
+     * @param descrizione descrizione dell'annuncio
+     * @param proprietario proprietario dell'annuncio
+     * @param chiavi Stringa con separatore contenente le chiavi
+     * @param max prezzo massimo
+     * @param min prezzo minimo
+     */
     public Acquisto(String nome, String descrizione, Utente proprietario, String chiavi, Double max, Double min){
         super(nome, descrizione, proprietario, chiavi);
         this.max = max;
         this.min = min;
     }
 
+    /**
+     * getter Min
+     * @return Val Min
+     */
+    @SuppressWarnings("unused")
     public Double getMin() {
         return min;
     }
 
+    /**
+     * getter Max
+     * @return Val Max
+     */
+    @SuppressWarnings("unused")
     public Double getMax() {
         return max;
     }

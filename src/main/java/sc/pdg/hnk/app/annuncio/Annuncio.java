@@ -52,7 +52,7 @@ public abstract class Annuncio implements Serializable {
      * @return restituisce un set di parole chiave
      */
     public static Set<String> chiaviToLista(String chiavi){
-        return new HashSet<>(Arrays.asList(chiavi.split(",")));
+        return new HashSet<>(Arrays.stream(chiavi.split(",")).map(String::trim).toList());
     }
 
     /**

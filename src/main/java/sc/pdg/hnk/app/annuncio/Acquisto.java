@@ -11,8 +11,8 @@ import java.io.Serializable;
  */
 public class Acquisto extends Annuncio implements Serializable {
 
-    private Double max = 0D; // Limite superiore
-    private Double min = 0D; //Limite inferiore
+    private final Double max; // Limite superiore
+    private final Double min; //Limite inferiore
 
     public Acquisto(String nome, String descrizione, Utente proprietario, String chiavi, Double max, Double min){
         super(nome, descrizione, proprietario, chiavi);
@@ -30,6 +30,6 @@ public class Acquisto extends Annuncio implements Serializable {
 
     @Override
     public String toString() {
-        return String.format("Ricerca: %s\n\t%s\n\tBudget: %.2f-%.2f €\n\tChiavi:%s\n\tDi: %s\n", nome, descrizione, min, max, String.join(",", chiavi), proprietario);
+        return String.format("Ricerca: %s\n\t%s\n\tBudget: %.2f-%.2f EUR\n\tChiavi:%s\n\tDi: %s\n", nome, descrizione, min, max, String.join(",", chiavi), proprietario);
     }
 }

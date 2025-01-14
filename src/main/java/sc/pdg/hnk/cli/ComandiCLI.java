@@ -14,9 +14,8 @@ import sc.pdg.hnk.app.utente.Utente;
 
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
-import java.util.HashMap;
-import java.util.Objects;
-import java.util.Scanner;
+import java.time.format.DateTimeParseException;
+import java.util.*;
 import java.util.concurrent.TimeUnit;
 
 public class ComandiCLI {
@@ -28,8 +27,8 @@ public class ComandiCLI {
      * Costruttore della classe
      */
     public ComandiCLI(){
-        load();
-        mostraMenuUtente();
+        load(); /* Caricamento da file */
+        mostraMenuUtente(); /* Avvia menù utente */
     }
 
     /**
@@ -68,6 +67,42 @@ public class ComandiCLI {
     }
 
     /**
+     *  Chiede conferma all'utente prima di proseguire
+     */
+    private void chiediConferma(){
+        System.out.println("Premere INVIO per continuare...");
+        scanner.nextLine();
+    }
+
+    /**
+     * Conversioni stringhe in numeri interi.
+     * Se fallisce restituisce 0.
+     */
+    private int parseIntegerOrDefault(String input){
+        int out;
+        try{
+            out = Integer.parseInt(input);
+        }catch (Exception e){
+            out = 0;
+        }
+        return out;
+    }
+
+    /**
+     * Conversioni stringhe in numeri con virgola
+     * Se fallisce restituisce 0.0
+     */
+    private double parseDoubleOrDefault(String input){
+        double out;
+        try{
+            out = Double.parseDouble(input);
+        }catch (Exception e){
+            out = 0;
+        }
+        return out;
+    }
+
+    /**
      * Fa il login e valorizza la sessione
      */
     private void faiLogin(){
@@ -86,12 +121,14 @@ public class ComandiCLI {
 
         try {
             sessione.setCurrentUser(Utente.loginUtente(email, password));
+            pulisciSchermo();
             mostraMenuPrincipale();
         }catch(UserException e){
             // Login non effettuato
             System.out.println(e.getMessage());
-            System.out.println();
-            faiLogin();
+            chiediConferma();
+            pulisciSchermo();
+            faiLogin(); // Riprova
         }
     }
 
@@ -106,6 +143,9 @@ public class ComandiCLI {
 
         if(Objects.equals(scanner.nextLine(), "1")){
             mostraMenuUtente();
+        }else{
+            pulisciSchermo();
+            mostraMenuPrincipale();
         }
 
     }
@@ -130,6 +170,7 @@ public class ComandiCLI {
         System.out.println("3\tPulisci bacheca");
         System.out.println("4\tSalva bacheca");
         System.out.println("5\tLogout");
+        System.out.print(": ");
 
         while(!ok) {
 
@@ -137,20 +178,30 @@ public class ComandiCLI {
                 case "1" ->{
                     pulisciSchermo();
                     mostraMenuAnnunci();
+                    mostraMenuPrincipale();
+                    ok = true;
                 }
 
                 case "2" ->{
                     pulisciSchermo();
                     inserimentoAnnuncio();
+                    mostraMenuPrincipale();
+                    ok = true;
                 }
                 case "3" ->{
                     pulisciSchermo();
                     Bacheca.pulisciBacheca();
                     System.out.println("Bacheca pulita correttamente");
+                    chiediConferma();
+                    mostraMenuPrincipale();
+                    ok = true;
                 }
                 case "4" ->{
                     pulisciSchermo();
                     store();
+                    chiediConferma();
+                    mostraMenuPrincipale();
+                    ok = true;
                 }
                 case "5" ->{
                     ok = true;
@@ -176,7 +227,9 @@ public class ComandiCLI {
         System.out.println("4\tCerca annuncio");
         System.out.println("5\tMiei annunci");
         System.out.println("6\tRimuovi annunci");
-        System.out.println("7\tTorna indietro");
+        System.out.println("7\tAggiungi parola chiave");
+        System.out.println("8\tTorna indietro");
+        System.out.println(": ");
 
         while(!ok){
             switch(scanner.nextLine()){
@@ -206,6 +259,7 @@ public class ComandiCLI {
                     System.out.println("2\tVendita");
                     System.out.println("3\tTutti");
                     System.out.println("4\tTorna indietro");
+                    System.out.print(": ");
 
                     while(!ook){
                         switch(scanner.nextLine()){
@@ -244,11 +298,18 @@ public class ComandiCLI {
                     rimuoviAnnuncio();
                 }
 
-                case "7" -> ok = true;
+                case "7" -> {
+                    ok = true;
+                    aggiungiChiave();
+                }
+
+                case "8" -> ok = true;
 
                 default -> System.out.print(": ");
             }
         }
+        chiediConferma();
+        pulisciSchermo();
     }
 
     /**
@@ -298,34 +359,33 @@ public class ComandiCLI {
         boolean ook = false;
         String nome,descrizione,chiavi;
         double prezzo,max,min;
-        LocalDate data=null;
-        DateTimeFormatter dateFormat = DateTimeFormatter.ofPattern("M/d/yyyy");
+        LocalDate data;
 
         pulisciSchermo();
 
         System.out.println("[Inserimento Nuovo Annuncio - Benvenuto]");
         System.out.println("Effettuare una selezione valida:");
         System.out.println("1\tCrea un annuncio di vendita");
-        System.out.println("2\tCrea un annuncio di acquisto");
+        System.out.println("2\tCrea un annuncio di ricerca");
         System.out.println("3\tEsci");
         System.out.print(": ");
 
         while(!ok) {
             switch (scanner.nextLine()) {
                 case "1" -> {
-                    Vendita.Condizioni condizione=Vendita.Condizioni.NUOVO;
+                    Vendita.Condizioni condizione = Vendita.Condizioni.NUOVO;
 
                     //Nome
-                    System.out.println("inserire il nome dell'annuncio");
+                    System.out.print("Nome annuncio: ");
                     nome = scanner.nextLine();
 
                     //Descrizione
-                    System.out.println("inserire la descrizione dell'annuncio");
+                    System.out.print("Descrizione: ");
                     descrizione = scanner.nextLine();
 
                     //Prezzo
-                    System.out.println("inserire il prezzo dell'annuncio");
-                    prezzo = scanner.nextDouble();
+                    System.out.print("Prezzo: ");
+                    prezzo = parseDoubleOrDefault(scanner.nextLine());
 
                     //Stato
                     System.out.println("inserire lo stato dell'oggetto");
@@ -334,24 +394,25 @@ public class ComandiCLI {
                     System.out.println("3\tUsato");
                     System.out.println("4\tMolto Usato");
                     System.out.println("5\tNon Funzionante");
+                    System.out.print(": ");
                     while(!ook) {
                         switch (scanner.nextLine()){
-                            case "1" -> ook=true;
+                            case "1" -> ook = true;
                             case "2" ->{
-                                ook=true;
-                                condizione=Vendita.Condizioni.COME_NUOVO;
+                                ook = true;
+                                condizione = Vendita.Condizioni.COME_NUOVO;
                             }
                             case  "3" -> {
-                                ook=true;
-                                condizione=Vendita.Condizioni.USATO;
+                                ook = true;
+                                condizione = Vendita.Condizioni.USATO;
                             }
                             case  "4" -> {
-                                ook=true;
-                                condizione=Vendita.Condizioni.MOLTO_USATO;
+                                ook = true;
+                                condizione = Vendita.Condizioni.MOLTO_USATO;
                             }
                             case  "5" -> {
-                                ook=true;
-                                condizione=Vendita.Condizioni.NON_FUNZIONANTE;
+                                ook = true;
+                                condizione = Vendita.Condizioni.NON_FUNZIONANTE;
 
                             }
                             default -> {
@@ -363,14 +424,21 @@ public class ComandiCLI {
                     }
 
                     //chiavi
-                    System.out.println("imposta le parole chiave separate da ,");
-                    chiavi=scanner.nextLine();
+                    System.out.print("Parole chiave (separate da ','): ");
+                    chiavi = scanner.nextLine();
 
                     //data scadenza
-                    System.out.println("imposta la data di scadenza");
-                    data=LocalDate.parse("Inserisci la data con formato (Mese/Giorno/Anno)",dateFormat);
+                    System.out.print("imposta la data di scadenza (dd-mm-yyyy):");
 
-                    Bacheca.aggiungiAnnuncio(new Vendita(nome,descrizione,sessione.getCurrentUser(),chiavi,prezzo,data,condizione));
+                    try{
+                        data = LocalDate.parse(scanner.nextLine(), DateTimeFormatter.ofPattern("dd-MM-yyyy"));
+                    }catch (DateTimeParseException e){
+                        System.out.println("Formato non valido");
+                        break;
+                    }
+
+
+                    Bacheca.aggiungiAnnuncio(new Vendita(nome, descrizione, sessione.getCurrentUser(), chiavi, prezzo, data, condizione));
                     ok = true;
                     System.out.println("Annuncio inserito correttamente");
                     try {
@@ -381,37 +449,38 @@ public class ComandiCLI {
                 }
 
                 case "2" -> {
-                    //Nome annuncio
-                    System.out.println("inserire il nome");
-                    nome=scanner.nextLine();
+                    // nome annuncio
+                    System.out.print("Nome annuncio: ");
+                    nome = scanner.nextLine();
 
-                    //Descrizione annuncio
-                    System.out.println("inserire la descrizione");
-                    descrizione=scanner.nextLine();
+                    // descrizione annuncio
+                    System.out.println("Descrizione: ");
+                    descrizione = scanner.nextLine();
 
-                    //inserimento chiavi sottoforma di stringa con separatore
-                    System.out.println("inserire le chiavi separate da ,");
-                    chiavi=scanner.nextLine();
+                    // inserimento chiavi sotto forma di stringa con separatore
+                    System.out.print("Parole chiave (separate da ','): ");
+                    chiavi = scanner.nextLine();
 
                     //inserimento prezzo massimo
-                    System.out.println("inserire il prezzo massimo da spendere");
-                    max=scanner.nextDouble();
+                    System.out.print("Budget massimo: ");
+                    max = parseDoubleOrDefault(scanner.nextLine());
 
                     //inserimento prezzo minimo
-                    System.out.println("inserire il prezzo minimo da spendere");
-                    min=scanner.nextDouble();
+                    System.out.print("Budget minimo: ");
+                    min = parseDoubleOrDefault(scanner.nextLine());
 
-                    Bacheca.aggiungiAnnuncio(new Acquisto(nome,descrizione,sessione.getCurrentUser(),chiavi,max,min));
+                    // Inserimento annuncio di ricerca e ottenimento correlati
+                    List<Annuncio> correlati = Bacheca.aggiungiAnnuncio(new Acquisto(nome, descrizione, sessione.getCurrentUser(), chiavi, max, min));
                     System.out.println("Annuncio inserito correttamente");
-                    ok=true;
+                    ok = true;
                     try {
                         TimeUnit.SECONDS.sleep(3);
                     } catch (InterruptedException e) {
                         mostraMenuUtente();
                     }
                     pulisciSchermo();
-                    System.out.println("ecco qui tutti gli annunci che coincidono con le chiavi inserite");
-                    Bacheca.ricerca(Annuncio.chiaviToLista(chiavi)).forEach(System.out::println);
+                    System.out.println("[Bacheca - Annunci di vendita correlati]");
+                    Objects.requireNonNullElse(correlati, new ArrayList<>()).forEach(System.out::println);
                     System.out.println("Premi invio per continuare");
                     scanner.nextLine();
                     pulisciSchermo();
@@ -421,8 +490,7 @@ public class ComandiCLI {
 
                 case "3" -> {
                     pulisciSchermo();
-                    mostraMenuPrincipale();
-
+                    ok = true;
                 }
 
                 default -> {
@@ -432,6 +500,7 @@ public class ComandiCLI {
 
             }
         }
+        chiediConferma();
     }
 
     /**
@@ -455,10 +524,51 @@ public class ComandiCLI {
             Utente nuovo = Utente.creaUtente(password, email, nome);
             this.sessione.setCurrentUser(nuovo);
             System.out.println("Utente creato con successo.");
+            chiediConferma();
+            mostraMenuPrincipale();
         }catch (UserListException e){
             System.out.println(e.getMessage());
             registraUtente();
         }
+    }
+
+    /**
+     * Aggiunge una parola chiave dalla lista degli annunci dell'utente
+     */
+    private void aggiungiChiave(){
+        /* Visualizza i miei annunci */
+        int selezionato;
+        HashMap<Integer, Annuncio> miei = new HashMap<>();
+        int index = 1;
+        boolean ok = false;
+
+        for (Annuncio a : new Bacheca()) {
+            if (a.isProprietario(sessione.getCurrentUser())) {
+                miei.put(index, a);
+                System.out.println(index+"\t"+a);
+                index++;
+            }
+        }
+
+        if(index == 1){
+            System.out.println("Nessun annuncio presente.");
+            return;
+        }
+
+        while(!ok){
+            System.out.printf("Seleziona annuncio da modificare (1-%d): ", index-1);
+            selezionato = parseIntegerOrDefault(scanner.nextLine());
+            try {
+                System.out.print("Nuova parola chiave: ");
+                Objects.requireNonNull(miei.get(selezionato)).aggiungiChiave(scanner.nextLine());
+                ok = true;
+            } catch (NullPointerException e){
+                System.out.println("Selezione annuncio non valida.");
+            }
+        }
+
+        chiediConferma();
+        pulisciSchermo();
     }
 
     /**
@@ -485,14 +595,14 @@ public class ComandiCLI {
         }
 
         while(!ok){
-            System.out.printf("Seleziona annuncio da eliminare (1-%d): ", index);
-            selezionato = scanner.nextInt();
+            System.out.printf("Seleziona annuncio da eliminare (1-%d): ", index-1);
+            selezionato = parseIntegerOrDefault(scanner.nextLine());
             try {
                 if(Bacheca.rimuoviAnnuncio(Objects.requireNonNull(miei.get(selezionato).getIDAnnuncio()), sessione.getCurrentUser())){
                     System.out.println("Annuncio rimosso");
                 }else{
                     System.out.println("L'annuncio selezionato non esiste");
-                };
+                }
                 ok = true;
             } catch (RemoveException e) {
                 System.out.println(e.getMessage());
@@ -501,5 +611,7 @@ public class ComandiCLI {
                 System.out.println("Selezione non valida.");
             }
         }
+        chiediConferma();
+        pulisciSchermo();
     }
 }

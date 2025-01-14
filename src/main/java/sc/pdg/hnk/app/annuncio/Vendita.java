@@ -38,6 +38,7 @@ public class Vendita extends Annuncio implements Serializable {
      * @param prezzo prezzo dell'oggetto in vendita
      * @param stato stato di usura dell'oggetto in vendita.
      */
+    @SuppressWarnings("unused")
     public Vendita(String nome, String descrizione , Utente proprietario, String chiavi, Double prezzo, Condizioni stato) {
         super(nome, descrizione,proprietario, chiavi);
         this.prezzo = prezzo;
@@ -82,6 +83,6 @@ public class Vendita extends Annuncio implements Serializable {
 
     @Override
     public String toString() {
-        return String.format("Vendita: %s\n\t%s\n\tPrezzo: %.2f €\n\tChiavi:%s\n\tDi: %s\n", nome, descrizione, prezzo, String.join(",", chiavi), proprietario);
+        return String.format("Vendita: %s\n\t%s\n\tStato: %s\n\tPrezzo: %.2f EUR\n\tChiavi:%s\n\tDi: %s\n", nome, descrizione, this.getStato(), prezzo, String.join(",", chiavi), proprietario);
     }
 }

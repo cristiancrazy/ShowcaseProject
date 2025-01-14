@@ -66,7 +66,7 @@ public class Bacheca implements Iterable<Annuncio> {
         List<Annuncio> trovati = new ArrayList<>();
 
         for (Annuncio a : annunci){
-            if(a.getChiavi().containsAll(chiavi)){
+            if(new HashSet<>(a.getChiavi().stream().map(String::toLowerCase).toList()).containsAll(chiavi.stream().map(String::toLowerCase).toList())){
                 trovati.add(a);
             }
         }

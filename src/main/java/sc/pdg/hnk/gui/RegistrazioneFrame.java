@@ -1,9 +1,10 @@
 /*
- * Created by JFormDesigner on Wed Jan 15 16:37:36 CET 2025
+ * Created by JFormDesigner on Wed Jan 15 22:04:40 CET 2025
  */
 
 package sc.pdg.hnk.gui;
 
+import sc.pdg.hnk.app.utente.UserException;
 import sc.pdg.hnk.app.utente.UserListException;
 
 import java.awt.*;
@@ -19,101 +20,104 @@ public class RegistrazioneFrame extends JFrame {
         initComponents();
     }
 
-    private void TornaIndietro(ActionEvent e) {
+    private void indietro(ActionEvent e) {
+        // Riapri la sessione login
         new LoginFrame().setVisible(true);
         this.dispose();
     }
 
-    private void Registrazione(ActionEvent e) {
+    private void registrazione(ActionEvent e) {
+        // Continua con il login utente e accesso alla bacheca
         try{
-            ComandiGUI.faiRegistrazione(this.EmailField.getText(), this.PasswordField.getText(), this.NomeField.getText());
-        }catch (UserListException x){
-            JOptionPane.showMessageDialog(null, x.getMessage(),  "Errore", JOptionPane.ERROR_MESSAGE);
+            ComandiGUI.faiRegistrazione(this.emailField.getText(), this.passwordField.getText(), this.usernameField.getText());
+            JOptionPane.showMessageDialog(null, "Registrazione utente effettuata con successo.", "Account aggiunto", JOptionPane.INFORMATION_MESSAGE);
+            new LoginFrame().setVisible(true);
+            this.dispose();
+        }catch (UserListException ecc){
+            JOptionPane.showMessageDialog(null, ecc.getMessage(), "Errore - Registrazione", JOptionPane.ERROR_MESSAGE);
         }
     }
 
     private void initComponents() {
         // JFormDesigner - Component initialization - DO NOT MODIFY  //GEN-BEGIN:initComponents  @formatter:off
-        // Generated using JFormDesigner Evaluation license - Cristian Capraro
-        CreazioneLabel = new JLabel();
-        EmailField = new JTextField();
-        NomeField = new JTextField();
-        PasswordField = new JTextField();
-        TornaButton = new JButton();
-        RegistrazioneButton = new JButton();
-        EmailLabel = new JLabel();
-        UtenteLabel = new JLabel();
-        PasswordLabel = new JLabel();
+        // Generated using JFormDesigner Educational license - Cristian Capraro
+        benvenutoLabel = new JLabel();
+        usernameField = new JTextField();
+        emailField = new JTextField();
+        usernameLabel = new JLabel();
+        emailLabel = new JLabel();
+        passwordField = new JTextField();
+        passwordLabel = new JLabel();
+        registrazioneButton = new JButton();
+        indietroButton = new JButton();
 
         //======== this ========
-        setTitle("Bacheca - Registrazione Utente");
+        setTitle("Bacheca - Registrazione nuovo utente");
         var contentPane = getContentPane();
-        this.setResizable(false);
-        this.setDefaultCloseOperation(DISPOSE_ON_CLOSE);
 
-        //---- CreazioneLabel ----
-        CreazioneLabel.setText("Registrazione - Nuovo utente");
-        CreazioneLabel.setFont(CreazioneLabel.getFont().deriveFont(Font.BOLD, CreazioneLabel.getFont().getSize() + 2f));
+        //---- benvenutoLabel ----
+        benvenutoLabel.setText("Crezione di un nuovo account utente");
+        benvenutoLabel.setFont(benvenutoLabel.getFont().deriveFont(benvenutoLabel.getFont().getStyle() | Font.BOLD, benvenutoLabel.getFont().getSize() + 2f));
 
-        //---- TornaButton ----
-        TornaButton.setText("Torna indietro");
-        TornaButton.addActionListener(this::TornaIndietro);
+        //---- usernameLabel ----
+        usernameLabel.setText("Nome Utente");
 
-        //---- RegistrazioneButton ----
-        RegistrazioneButton.setText("Effettua registrazione");
-        RegistrazioneButton.addActionListener(this::Registrazione);
+        //---- emailLabel ----
+        emailLabel.setText("Email");
 
-        //---- EmailLabel ----
-        EmailLabel.setText("Email");
+        //---- passwordLabel ----
+        passwordLabel.setText("Password");
 
-        //---- UtenteLabel ----
-        UtenteLabel.setText("Nome utente");
+        //---- registrazioneButton ----
+        registrazioneButton.setText("Registrati");
+        registrazioneButton.addActionListener(e -> registrazione(e));
 
-        //---- PasswordLabel ----
-        PasswordLabel.setText("Nuova password");
+        //---- indietroButton ----
+        indietroButton.setText("Torna indietro");
+        indietroButton.addActionListener(e -> indietro(e));
 
         GroupLayout contentPaneLayout = new GroupLayout(contentPane);
         contentPane.setLayout(contentPaneLayout);
         contentPaneLayout.setHorizontalGroup(
             contentPaneLayout.createParallelGroup()
                 .addGroup(contentPaneLayout.createSequentialGroup()
-                    .addGap(50, 50, 50)
-                    .addGroup(contentPaneLayout.createParallelGroup()
-                        .addComponent(PasswordLabel, GroupLayout.PREFERRED_SIZE, 120, GroupLayout.PREFERRED_SIZE)
-                        .addComponent(UtenteLabel, GroupLayout.PREFERRED_SIZE, 120, GroupLayout.PREFERRED_SIZE)
-                        .addComponent(CreazioneLabel)
-                        .addComponent(PasswordField, GroupLayout.PREFERRED_SIZE, 290, GroupLayout.PREFERRED_SIZE)
-                        .addComponent(NomeField, GroupLayout.PREFERRED_SIZE, 290, GroupLayout.PREFERRED_SIZE)
-                        .addComponent(EmailField, GroupLayout.PREFERRED_SIZE, 290, GroupLayout.PREFERRED_SIZE)
-                        .addGroup(contentPaneLayout.createSequentialGroup()
-                            .addComponent(RegistrazioneButton)
-                            .addPreferredGap(LayoutStyle.ComponentPlacement.RELATED)
-                            .addComponent(TornaButton))
-                        .addComponent(EmailLabel, GroupLayout.PREFERRED_SIZE, 120, GroupLayout.PREFERRED_SIZE))
-                    .addContainerGap(58, Short.MAX_VALUE))
+                    .addGap(18, 18, 18)
+                    .addGroup(contentPaneLayout.createParallelGroup(GroupLayout.Alignment.TRAILING)
+                        .addComponent(benvenutoLabel, GroupLayout.PREFERRED_SIZE, 359, GroupLayout.PREFERRED_SIZE)
+                        .addGroup(contentPaneLayout.createParallelGroup()
+                            .addComponent(emailField, GroupLayout.PREFERRED_SIZE, 358, GroupLayout.PREFERRED_SIZE)
+                            .addComponent(emailLabel)
+                            .addComponent(usernameField, GroupLayout.PREFERRED_SIZE, 358, GroupLayout.PREFERRED_SIZE)
+                            .addComponent(passwordLabel)
+                            .addComponent(passwordField, GroupLayout.PREFERRED_SIZE, 358, GroupLayout.PREFERRED_SIZE)
+                            .addComponent(usernameLabel)
+                            .addGroup(contentPaneLayout.createSequentialGroup()
+                                .addComponent(registrazioneButton)
+                                .addGap(18, 18, 18)
+                                .addComponent(indietroButton))))
+                    .addContainerGap(21, Short.MAX_VALUE))
         );
         contentPaneLayout.setVerticalGroup(
             contentPaneLayout.createParallelGroup()
                 .addGroup(contentPaneLayout.createSequentialGroup()
-                    .addContainerGap()
-                    .addComponent(CreazioneLabel, GroupLayout.PREFERRED_SIZE, 31, GroupLayout.PREFERRED_SIZE)
-                    .addGap(24, 24, 24)
-                    .addComponent(EmailLabel)
+                    .addComponent(benvenutoLabel, GroupLayout.PREFERRED_SIZE, 30, GroupLayout.PREFERRED_SIZE)
                     .addPreferredGap(LayoutStyle.ComponentPlacement.RELATED)
-                    .addComponent(EmailField, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
-                    .addGap(5, 5, 5)
-                    .addComponent(UtenteLabel)
+                    .addComponent(usernameLabel)
                     .addPreferredGap(LayoutStyle.ComponentPlacement.RELATED)
-                    .addComponent(NomeField, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
-                    .addGap(3, 3, 3)
-                    .addComponent(PasswordLabel)
-                    .addGap(2, 2, 2)
-                    .addComponent(PasswordField, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
-                    .addPreferredGap(LayoutStyle.ComponentPlacement.RELATED, 25, Short.MAX_VALUE)
+                    .addComponent(usernameField, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
+                    .addPreferredGap(LayoutStyle.ComponentPlacement.RELATED)
+                    .addComponent(emailLabel)
+                    .addPreferredGap(LayoutStyle.ComponentPlacement.RELATED)
+                    .addComponent(emailField, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
+                    .addPreferredGap(LayoutStyle.ComponentPlacement.RELATED)
+                    .addComponent(passwordLabel)
+                    .addPreferredGap(LayoutStyle.ComponentPlacement.RELATED)
+                    .addComponent(passwordField, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
+                    .addPreferredGap(LayoutStyle.ComponentPlacement.RELATED, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addGroup(contentPaneLayout.createParallelGroup(GroupLayout.Alignment.BASELINE)
-                        .addComponent(RegistrazioneButton)
-                        .addComponent(TornaButton))
-                    .addGap(40, 40, 40))
+                        .addComponent(registrazioneButton)
+                        .addComponent(indietroButton))
+                    .addContainerGap())
         );
         pack();
         setLocationRelativeTo(getOwner());
@@ -121,15 +125,15 @@ public class RegistrazioneFrame extends JFrame {
     }
 
     // JFormDesigner - Variables declaration - DO NOT MODIFY  //GEN-BEGIN:variables  @formatter:off
-    // Generated using JFormDesigner Evaluation license - Cristian Capraro
-    private JLabel CreazioneLabel;
-    private JTextField EmailField;
-    private JTextField NomeField;
-    private JTextField PasswordField;
-    private JButton TornaButton;
-    private JButton RegistrazioneButton;
-    private JLabel EmailLabel;
-    private JLabel UtenteLabel;
-    private JLabel PasswordLabel;
+    // Generated using JFormDesigner Educational license - Cristian Capraro
+    private JLabel benvenutoLabel;
+    private JTextField usernameField;
+    private JTextField emailField;
+    private JLabel usernameLabel;
+    private JLabel emailLabel;
+    private JTextField passwordField;
+    private JLabel passwordLabel;
+    private JButton registrazioneButton;
+    private JButton indietroButton;
     // JFormDesigner - End of variables declaration  //GEN-END:variables  @formatter:on
 }

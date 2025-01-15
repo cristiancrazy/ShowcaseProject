@@ -15,11 +15,10 @@ import java.util.List;
 
 public class ComandiGUI {
     private static final Sessione sessione = new Sessione();
-
+    private static BachecaFrame bacheca = new BachecaFrame();
 
     public static void lanciaGUI(){
-        ComandiGUI gui = new ComandiGUI();
-        gui.load();
+        load();
         new LoginFrame().setVisible(true);
     }
 
@@ -30,7 +29,7 @@ public class ComandiGUI {
     /**
      *  Caricamento bacheca e lista utenti da file
      */
-    void load(){
+    static void load(){
         boolean daCreare = false;
         try{
             Bacheca.recupero(sessione.getFileBackup());
@@ -46,12 +45,33 @@ public class ComandiGUI {
     /**
      * Salvataggio bacheca e lista utenti sul file
      */
-    void store(){
+    static void store(){
         try{
             Bacheca.salvataggio(sessione.getFileBackup());
         }catch (BachecaIOException e){
             System.out.println(e.getMessage());
         }
+    }
+
+    static void lanciaBacheca(){
+        bacheca = new BachecaFrame();
+        bacheca.setVisible(true);
+        caricaAnnunci(Bacheca.getBacheca());
+    }
+
+    private static void caricaAnnunci(List<Annuncio> annunci){
+        bacheca.getPanelAnnunci().removeAll();
+
+        for(Annuncio a : annunci){
+            bacheca.getPanelAnnunci().add(new AnnuncioPanel(a));
+        }
+        bacheca.repaint();
+        bacheca.revalidate();
+    }
+
+    static void aggiungiAnnuncio(Annuncio annuncio){
+        Bacheca.aggiungiAnnuncio(annuncio);
+        caricaAnnunci(Bacheca.getBacheca());
     }
 
     static void faiLogin(String email, String password) throws PasswordException, UserListException {
@@ -61,18 +81,14 @@ public class ComandiGUI {
     static void faiRegistrazione(String email,String password,String nome) throws UserListException{
             Utente nuovo = Utente.creaUtente(password, email, nome);
             sessione.setCurrentUser(nuovo);
-
+            store(); // Salvataggio
     }
 
-    private static List<AnnuncioPanel> linkAnnuncio(List<Annuncio> annunci){
-        List<AnnuncioPanel> out = new ArrayList<>();
-        for(Annuncio a : annunci){
-            out.add(new AnnuncioPanel(a));
-        }
-        return out;
+    static void faiLogout(){
+        store();
     }
 
-    static List<AnnuncioPanel> visualizzaTutti(){
-        return linkAnnuncio(Bacheca.getBacheca());
+    static Utente getUtenteCorrente(){
+        return sessione.getCurrentUser();
     }
 }

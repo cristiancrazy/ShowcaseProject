@@ -4,50 +4,50 @@ new FormModel {
 	contentType: "form/swing"
 	root: new FormRoot {
 		add( new FormWindow( "javax.swing.JFrame", new FormLayoutManager( class org.jdesktop.layout.GroupLayout ) {
-			"$horizontalGroup": "par l {seq l {space :p:50:p, par l {comp PasswordLabel:::p:120:p, comp UtenteLabel:::p:120:p, comp CreazioneLabel:::p::p, comp PasswordField:::p:290:p, comp NomeField:::p:290:p, comp EmailField:::p:290:p, seq l {comp RegistrazioneButton:::p::p, space :::p, comp TornaButton:::p::p}, comp EmailLabel::l:p:120:p}, space ::58:x}}"
-			"$verticalGroup": "par l {seq l {space :::p, comp CreazioneLabel:::p:31:p, space :p:24:p, comp EmailLabel:::p::p, space :::p, comp EmailField:::p::p, space :p:5:p, comp UtenteLabel:::p::p, space :::p, comp NomeField:::p::p, space :p:3:p, comp PasswordLabel:::p::p, space :p:2:p, comp PasswordField:::p::p, space ::25:x, par b {comp RegistrazioneButton::b:p::p, comp TornaButton::b:p::p}, space :p:40:p}}"
+			"$horizontalGroup": "par l {seq l {space :p:18:p, par t {comp benvenutoLabel:::p:359:p, par l:t {comp emailField::l:p:358:p, comp emailLabel::l:p::p, comp usernameField::l:p:358:p, comp passwordLabel::l:p::p, comp passwordField::l:p:358:p, comp usernameLabel::l:p::p, seq l {comp registrazioneButton:::p::p, space s:::p, comp indietroButton:::p::p}}}, space ::21:x}}"
+			"$verticalGroup": "par l {seq l {comp benvenutoLabel:::p:30:p, space :::p, comp usernameLabel:::p::p, space :::p, comp usernameField:::p::p, space :::p, comp emailLabel:::p::p, space :::p, comp emailField:::p::p, space :::p, comp passwordLabel:::p::p, space :::p, comp passwordField:::p::p, space :::x, par b {comp registrazioneButton::b:p::p, comp indietroButton::b:p::p}, space :::p}}"
 		} ) {
 			name: "this"
-			"title": "Bacheca - Registrazione Utente"
+			"title": "Bacheca - Registrazione nuovo utente"
 			add( new FormComponent( "javax.swing.JLabel" ) {
-				name: "CreazioneLabel"
-				"text": "Registrazione - Nuovo utente"
-				"font": new com.jformdesigner.model.SwingDerivedFont( null, 131073, 2, false )
+				name: "benvenutoLabel"
+				"text": "Crezione di un nuovo account utente"
+				"font": new com.jformdesigner.model.SwingDerivedFont( null, 1, 2, false )
 			} )
 			add( new FormComponent( "javax.swing.JTextField" ) {
-				name: "EmailField"
+				name: "usernameField"
 			} )
 			add( new FormComponent( "javax.swing.JTextField" ) {
-				name: "NomeField"
-			} )
-			add( new FormComponent( "javax.swing.JTextField" ) {
-				name: "PasswordField"
-			} )
-			add( new FormComponent( "javax.swing.JButton" ) {
-				name: "TornaButton"
-				"text": "Torna indietro"
-				addEvent( new FormEvent( "java.awt.event.ActionListener", "actionPerformed", "TornaIndietro", true ) )
-			} )
-			add( new FormComponent( "javax.swing.JButton" ) {
-				name: "RegistrazioneButton"
-				"text": "Effettua registrazione"
-				addEvent( new FormEvent( "java.awt.event.ActionListener", "actionPerformed", "Registrazione", true ) )
+				name: "emailField"
 			} )
 			add( new FormComponent( "javax.swing.JLabel" ) {
-				name: "EmailLabel"
+				name: "usernameLabel"
+				"text": "Nome Utente"
+			} )
+			add( new FormComponent( "javax.swing.JLabel" ) {
+				name: "emailLabel"
 				"text": "Email"
 			} )
-			add( new FormComponent( "javax.swing.JLabel" ) {
-				name: "UtenteLabel"
-				"text": "Nome utente"
+			add( new FormComponent( "javax.swing.JTextField" ) {
+				name: "passwordField"
 			} )
 			add( new FormComponent( "javax.swing.JLabel" ) {
-				name: "PasswordLabel"
-				"text": "Nuova password"
+				name: "passwordLabel"
+				"text": "Password"
+			} )
+			add( new FormComponent( "javax.swing.JButton" ) {
+				name: "registrazioneButton"
+				"text": "Registrati"
+				addEvent( new FormEvent( "java.awt.event.ActionListener", "actionPerformed", "registrazione", true ) )
+			} )
+			add( new FormComponent( "javax.swing.JButton" ) {
+				name: "indietroButton"
+				"text": "Torna indietro"
+				addEvent( new FormEvent( "java.awt.event.ActionListener", "actionPerformed", "indietro", true ) )
 			} )
 		}, new FormLayoutConstraints( null ) {
 			"location": new java.awt.Point( 0, 0 )
-			"size": new java.awt.Dimension( 400, 300 )
+			"size": new java.awt.Dimension( 400, 230 )
 		} )
 	}
 }

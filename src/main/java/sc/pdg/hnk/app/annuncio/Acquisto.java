@@ -3,6 +3,7 @@ package sc.pdg.hnk.app.annuncio;
 import sc.pdg.hnk.app.utente.Utente;
 
 import java.io.Serializable;
+import java.util.HashMap;
 
 /**
  * Classe figlia di annuncio, contiene informazioni aggiuntive
@@ -33,7 +34,6 @@ public class Acquisto extends Annuncio implements Serializable {
      * getter Min
      * @return Val Min
      */
-    @SuppressWarnings("unused")
     public Double getMin() {
         return min;
     }
@@ -42,7 +42,6 @@ public class Acquisto extends Annuncio implements Serializable {
      * getter Max
      * @return Val Max
      */
-    @SuppressWarnings("unused")
     public Double getMax() {
         return max;
     }
@@ -51,4 +50,5 @@ public class Acquisto extends Annuncio implements Serializable {
     public String toString() {
         return String.format("Ricerca: %s\n\t%s\n\tBudget: %.2f-%.2f EUR\n\tChiavi:%s\n\tDi: %s\n", nome, descrizione, min, max, String.join(",", chiavi), proprietario);
     }
+
 }

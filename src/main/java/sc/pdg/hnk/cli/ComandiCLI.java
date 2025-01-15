@@ -24,14 +24,6 @@ public class ComandiCLI {
     private final Scanner scanner = new Scanner(System.in);
 
     /**
-     * Costruttore della classe
-     */
-    public ComandiCLI(){
-        load(); /* Caricamento da file */
-        mostraMenuUtente(); /* Avvia menù utente */
-    }
-
-    /**
      *  Caricamento bacheca e lista utenti da file
      */
     private void load(){
@@ -56,6 +48,14 @@ public class ComandiCLI {
         }catch (BachecaIOException e){
             System.out.println(e.getMessage());
         }
+    }
+
+    /**
+     * Costruttore della classe
+     */
+    public ComandiCLI(){
+        load(); /* Caricamento da file */
+        mostraMenuUtente(); /* Avvia menù utente */
     }
 
     /**

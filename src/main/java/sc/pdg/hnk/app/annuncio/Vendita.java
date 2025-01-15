@@ -85,4 +85,20 @@ public class Vendita extends Annuncio implements Serializable {
     public String toString() {
         return String.format("Vendita: %s\n\t%s\n\tStato: %s\n\tPrezzo: %.2f EUR\n\tChiavi:%s\n\tDi: %s\n", nome, descrizione, this.getStato(), prezzo, String.join(",", chiavi), proprietario);
     }
+
+    /**
+     * Getter per il prezzo
+     * @return Prezzo dell'annuncio
+     */
+    public Double getPrezzo() {
+        return prezzo;
+    }
+
+    /**
+     * Getter per la scadenza
+     * @return Scadenza dell'annuncio
+     */
+    public LocalDate getScadenza() {
+        return scadenza;
+    }
 }

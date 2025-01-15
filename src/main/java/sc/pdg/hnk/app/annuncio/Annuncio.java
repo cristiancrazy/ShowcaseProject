@@ -92,4 +92,30 @@ public abstract class Annuncio implements Serializable {
     public Set<String> getChiavi() {
         return chiavi;
     }
+
+    /**
+     * Getter per il nome
+     * @return il nome dell'annuncio
+     */
+
+
+    public String getNome() {
+        return nome;
+    }
+
+    /**
+     * Getter per la descrizione
+     * @return descrizione dell'annuncio
+     */
+    public String getDescrizione() {
+        return descrizione;
+    }
+
+    /**
+     * Getter per il proprietario
+     * @return Proprietario dell'annuncio
+     */
+    public Utente getProprietario() {
+        return proprietario;
+    }
 }

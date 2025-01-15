@@ -115,4 +115,12 @@ public class Utente implements Serializable {
     public static void setUserList(HashMap<String, Utente> userList) {
         UserList = userList;
     }
+
+    /**
+     * Getter nome utente
+     * @return nome utente
+     */
+    public String getNome() {
+        return nome;
+    }
 }

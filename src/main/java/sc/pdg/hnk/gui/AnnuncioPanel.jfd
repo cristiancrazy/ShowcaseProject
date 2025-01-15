@@ -1,0 +1,47 @@
+JFDML JFormDesigner: "8.2.4.0.393" Java: "21.0.5" encoding: "UTF-8"
+
+new FormModel {
+	contentType: "form/swing"
+	root: new FormRoot {
+		add( new FormContainer( "javax.swing.JPanel", new FormLayoutManager( class org.jdesktop.layout.GroupLayout ) {
+			"$horizontalGroup": "par l {seq l {space :::p, par l:::p {seq {comp TitoloLabel:::p:86:p, space :::x, comp TipoLabel:::p:110:p}, comp scrollPane1:::p:530:p, seq t {comp StatoLabel:::p:110:p, space u:::p, comp ProprietarioLabel:::p:110:p, space u:::p, comp ScadenzaLabel:::p:110:p, space :::x, comp PrezzoLabel:::p:60:p}}, space ::24:x}}"
+			"$verticalGroup": "par l {seq l {space :::p, par b {comp TitoloLabel::b:p::p, comp TipoLabel::b:p:21:p}, space u:::p, comp scrollPane1:::p:50:p, space :::p, par b {comp PrezzoLabel::b:::x, comp StatoLabel::b:p:21:p, comp ProprietarioLabel::b:p:21:p, comp ScadenzaLabel::b:p:21:p}, space :::p}}"
+		} ) {
+			name: "this"
+			add( new FormComponent( "javax.swing.JLabel" ) {
+				name: "TitoloLabel"
+				"text": "Titolo annuncio"
+			} )
+			add( new FormContainer( "javax.swing.JScrollPane", new FormLayoutManager( class javax.swing.JScrollPane ) ) {
+				name: "scrollPane1"
+				add( new FormComponent( "javax.swing.JTextArea" ) {
+					name: "DescrizioneArea"
+					"text": "Descrizione annuncio"
+				} )
+			} )
+			add( new FormComponent( "javax.swing.JLabel" ) {
+				name: "PrezzoLabel"
+				"text": "Prezzo"
+			} )
+			add( new FormComponent( "javax.swing.JLabel" ) {
+				name: "StatoLabel"
+				"text": "Stato"
+			} )
+			add( new FormComponent( "javax.swing.JLabel" ) {
+				name: "TipoLabel"
+				"text": "Tipo annuncio"
+			} )
+			add( new FormComponent( "javax.swing.JLabel" ) {
+				name: "ProprietarioLabel"
+				"text": "Proprietario"
+			} )
+			add( new FormComponent( "javax.swing.JLabel" ) {
+				name: "ScadenzaLabel"
+				"text": "Scadenza"
+			} )
+		}, new FormLayoutConstraints( null ) {
+			"location": new java.awt.Point( 0, 0 )
+			"size": new java.awt.Dimension( 560, 120 )
+		} )
+	}
+}

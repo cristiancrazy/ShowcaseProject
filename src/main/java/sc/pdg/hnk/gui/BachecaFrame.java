@@ -44,8 +44,6 @@ public class BachecaFrame extends JFrame {
 
     private void logout(ActionEvent e) {
         this.dispose();
-        ComandiGUI.faiLogout();
-        new LoginFrame().setVisible(true);
     }
 
     private void chiusuraFinestra(WindowEvent e) {

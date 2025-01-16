@@ -24,11 +24,6 @@ public class RicercaFrame extends JFrame {
         boolean vendita = this.venditaCheck.isSelected();
         boolean acquisto = this.acquistoCheck.isSelected();
 
-        if(chiaviField.getText().isEmpty()&&!this.mieiCheck.isSelected()){
-            JOptionPane.showMessageDialog(null, "Inserire almeno una chiave");
-            return;
-        }
-
         if(mieiCheck.isSelected()){
             if(vendita&&acquisto){
                 if(chiaviField.getText().isEmpty()){
@@ -53,11 +48,23 @@ public class RicercaFrame extends JFrame {
             }
         }else{
             if(vendita&&acquisto){
-                ComandiGUI.ricercaAnnuncio(this.chiaviField.getText(), null);
+                if(chiaviField.getText().isEmpty()){
+                    ComandiGUI.ricercaAnnuncio(null);
+                }else{
+                    ComandiGUI.ricercaAnnuncio(this.chiaviField.getText(), null);
+                }
             }else if(vendita){
-                ComandiGUI.ricercaAnnuncio(this.chiaviField.getText(), Vendita.class);
+                if(chiaviField.getText().isEmpty()){
+                    ComandiGUI.ricercaAnnuncio(Vendita.class);
+                }else{
+                    ComandiGUI.ricercaAnnuncio(this.chiaviField.getText(), Vendita.class);
+                }
             }else if(acquisto){
-                ComandiGUI.ricercaAnnuncio(this.chiaviField.getText(), Acquisto.class);
+                if(chiaviField.getText().isEmpty()){
+                    ComandiGUI.ricercaAnnuncio(Acquisto.class);
+                }else{
+                    ComandiGUI.ricercaAnnuncio(this.chiaviField.getText(), Acquisto.class);
+                }
             }else{
                 JOptionPane.showMessageDialog(null, "Selezionare la tipologia di annuncio");
             }

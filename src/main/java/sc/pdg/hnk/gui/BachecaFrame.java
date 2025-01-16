@@ -4,6 +4,8 @@
 
 package sc.pdg.hnk.gui;
 
+import sc.pdg.hnk.app.bacheca.Bacheca;
+
 import java.awt.*;
 import java.awt.event.*;
 import javax.swing.*;
@@ -29,10 +31,6 @@ public class BachecaFrame extends JFrame {
         // TODO add your code here
     }
 
-    private void filtra(ActionEvent e) {
-        // TODO add your code here
-    }
-
     private void ricerca(ActionEvent e) {
         if(!this.ricerca.isVisible()){
             this.ricerca.setVisible(true);
@@ -40,7 +38,7 @@ public class BachecaFrame extends JFrame {
     }
 
     private void pulisci(ActionEvent e) {
-        // TODO add your code here
+        ComandiGUI.pulisciBacheca();
     }
 
     private void salva(ActionEvent e) {
@@ -71,7 +69,6 @@ public class BachecaFrame extends JFrame {
         toolbarBacheca = new JToolBar();
         aggiungiButton = new JButton();
         rimuoviButton = new JButton();
-        filtraButton = new JButton();
         ricercaButton = new JButton();
         pulisciButton = new JButton();
         salvaButton = new JButton();
@@ -112,14 +109,6 @@ public class BachecaFrame extends JFrame {
 			rimuovi(e);
 		});
             toolbarBacheca.add(rimuoviButton);
-
-            //---- filtraButton ----
-            filtraButton.setText("Filtra");
-            filtraButton.addActionListener(e -> {
-			aggiungi(e);
-			filtra(e);
-		});
-            toolbarBacheca.add(filtraButton);
 
             //---- ricercaButton ----
             ricercaButton.setText("Ricerca");
@@ -174,7 +163,6 @@ public class BachecaFrame extends JFrame {
     private JToolBar toolbarBacheca;
     private JButton aggiungiButton;
     private JButton rimuoviButton;
-    private JButton filtraButton;
     private JButton ricercaButton;
     private JButton pulisciButton;
     private JButton salvaButton;

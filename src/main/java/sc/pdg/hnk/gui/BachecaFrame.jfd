@@ -28,12 +28,6 @@ new FormModel {
 					addEvent( new FormEvent( "java.awt.event.ActionListener", "actionPerformed", "rimuovi", true ) )
 				} )
 				add( new FormComponent( "javax.swing.JButton" ) {
-					name: "filtraButton"
-					"text": "Filtra"
-					addEvent( new FormEvent( "java.awt.event.ActionListener", "actionPerformed", "aggiungi", true ) )
-					addEvent( new FormEvent( "java.awt.event.ActionListener", "actionPerformed", "filtra", true ) )
-				} )
-				add( new FormComponent( "javax.swing.JButton" ) {
 					name: "ricercaButton"
 					"text": "Ricerca"
 					addEvent( new FormEvent( "java.awt.event.ActionListener", "actionPerformed", "aggiungi", true ) )
@@ -44,6 +38,7 @@ new FormModel {
 					name: "pulisciButton"
 					"text": "Pulisci"
 					addEvent( new FormEvent( "java.awt.event.ActionListener", "actionPerformed", "aggiungi", true ) )
+					addEvent( new FormEvent( "java.awt.event.ActionListener", "actionPerformed", "pulisci", true ) )
 					addEvent( new FormEvent( "java.awt.event.ActionListener", "actionPerformed", "pulisci", true ) )
 				} )
 				add( new FormComponent( "javax.swing.JButton" ) {

@@ -10,6 +10,8 @@ import sc.pdg.hnk.app.annuncio.Vendita;
 
 import javax.swing.*;
 import javax.swing.GroupLayout;
+import javax.swing.border.LineBorder;
+import java.awt.*;
 import java.time.format.DateTimeFormatter;
 
 /**
@@ -19,6 +21,7 @@ public class AnnuncioPanel extends JPanel {
     public AnnuncioPanel(Annuncio annuncio) {
         initComponents();
         // Parsing dell'annuncio
+        this.setBorder(new LineBorder(Color.BLACK));
         descrizioneField.setText(annuncio.getDescrizione());
         proprietarioLabel.setText("Di: " + annuncio.getProprietario().getNome());
         if(annuncio instanceof Vendita){

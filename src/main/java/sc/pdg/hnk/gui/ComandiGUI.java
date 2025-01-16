@@ -12,6 +12,7 @@ import sc.pdg.hnk.app.utente.UserException;
 import sc.pdg.hnk.app.utente.UserListException;
 import sc.pdg.hnk.app.utente.Utente;
 
+import javax.swing.*;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -65,6 +66,12 @@ public class ComandiGUI {
         caricaAnnunci(Bacheca.getBacheca());
     }
 
+    static void pulisciBacheca(){
+        Bacheca.pulisciBacheca();
+        ricaricaBacheca();
+        JOptionPane.showMessageDialog(null, "Sono stati cancellati tutti gli annunci scaduti.", "Pulizia completata", JOptionPane.INFORMATION_MESSAGE);
+    }
+
     private static void caricaAnnunci(List<Annuncio> annunci){
         bacheca.getPanelAnnunci().removeAll();
 
@@ -88,6 +95,15 @@ public class ComandiGUI {
             caricaAnnunci(Bacheca.filtraTipo(Bacheca.ricerca(Bacheca.getBacheca(), Annuncio.chiaviToLista(chiavi)), tipo));
         }
     }
+
+    static void ricercaAnnuncio(Class<? extends Annuncio> tipo){
+        if(tipo == null){
+            caricaAnnunci(Bacheca.getBacheca());
+        }else{
+            caricaAnnunci(Bacheca.filtraTipo(Bacheca.getBacheca(), tipo));
+        }
+    }
+
 
     // Filtra gli annunci dell'utente
     static void ricercaAnnunciUtente(Class<? extends Annuncio> tipo,  Utente utente){

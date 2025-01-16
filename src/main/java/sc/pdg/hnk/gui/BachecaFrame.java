@@ -13,14 +13,16 @@ import javax.swing.*;
  */
 public class BachecaFrame extends JFrame {
     private AggiuntaFrame aggiunta = new AggiuntaFrame();
+    private RicercaFrame  ricerca = new RicercaFrame();
 
     public BachecaFrame() {
         initComponents();
     }
 
-    private void aggiungi(ActionEvent e) {
-        // Apre finestra di aggiunta
-        aggiunta.setVisible(true);
+    private void aggiungiAnnuncio(ActionEvent e) {
+        if(!aggiunta.isVisible()){
+            aggiunta.setVisible(true);
+        };
     }
 
     private void rimuovi(ActionEvent e) {
@@ -32,7 +34,9 @@ public class BachecaFrame extends JFrame {
     }
 
     private void ricerca(ActionEvent e) {
-        // TODO add your code here
+        if(!this.ricerca.isVisible()){
+            this.ricerca.setVisible(true);
+        }
     }
 
     private void pulisci(ActionEvent e) {
@@ -48,6 +52,16 @@ public class BachecaFrame extends JFrame {
         this.dispose();
         ComandiGUI.faiLogout();
         new LoginFrame().setVisible(true);
+    }
+
+    private void chiusuraFinestra(WindowEvent e) {
+        // Salvataggio e logout
+        ComandiGUI.faiLogout();
+        new LoginFrame().setVisible(true);
+    }
+
+    private void aggiungi(ActionEvent e) {
+        // TODO add your code here
     }
 
 
@@ -70,15 +84,25 @@ public class BachecaFrame extends JFrame {
         setTitle("Bacheca");
         setMinimumSize(new Dimension(640, 480));
         setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
+        addWindowListener(new WindowAdapter() {
+            @Override
+            public void windowClosed(WindowEvent e) {
+                chiusuraFinestra(e);
+            }
+        });
         var contentPane = getContentPane();
         contentPane.setLayout(new BorderLayout(15, 8));
 
         //======== toolbarBacheca ========
         {
+            toolbarBacheca.setFloatable(false);
 
             //---- aggiungiButton ----
             aggiungiButton.setText("Aggiungi");
-            aggiungiButton.addActionListener(e -> aggiungi(e));
+            aggiungiButton.addActionListener(e -> {
+			aggiungi(e);
+			aggiungiAnnuncio(e);
+		});
             toolbarBacheca.add(aggiungiButton);
 
             //---- rimuoviButton ----
@@ -101,6 +125,7 @@ public class BachecaFrame extends JFrame {
             ricercaButton.setText("Ricerca");
             ricercaButton.addActionListener(e -> {
 			aggiungi(e);
+			ricerca(e);
 			ricerca(e);
 		});
             toolbarBacheca.add(ricercaButton);

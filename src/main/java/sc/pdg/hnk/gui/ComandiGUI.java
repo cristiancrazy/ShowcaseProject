@@ -1,6 +1,8 @@
 package sc.pdg.hnk.gui;
 
+import sc.pdg.hnk.app.annuncio.Acquisto;
 import sc.pdg.hnk.app.annuncio.Annuncio;
+import sc.pdg.hnk.app.annuncio.Vendita;
 import sc.pdg.hnk.app.bacheca.Bacheca;
 import sc.pdg.hnk.app.bacheca.BachecaIOException;
 import sc.pdg.hnk.app.bacheca.BachecaNotFoundException;
@@ -59,6 +61,10 @@ public class ComandiGUI {
         caricaAnnunci(Bacheca.getBacheca());
     }
 
+    static void ricaricaBacheca(){
+        caricaAnnunci(Bacheca.getBacheca());
+    }
+
     private static void caricaAnnunci(List<Annuncio> annunci){
         bacheca.getPanelAnnunci().removeAll();
 
@@ -71,8 +77,37 @@ public class ComandiGUI {
 
     static void aggiungiAnnuncio(Annuncio annuncio){
         Bacheca.aggiungiAnnuncio(annuncio);
-        caricaAnnunci(Bacheca.getBacheca());
+        ricaricaBacheca();
     }
+
+    // Filtra ed effettua ricerca
+    static void ricercaAnnuncio(String chiavi, Class<? extends Annuncio> tipo){
+        if(tipo == null){
+            caricaAnnunci(Bacheca.ricerca(Bacheca.getBacheca(), Annuncio.chiaviToLista(chiavi)));
+        }else{
+            caricaAnnunci(Bacheca.filtraTipo(Bacheca.ricerca(Bacheca.getBacheca(), Annuncio.chiaviToLista(chiavi)), tipo));
+        }
+    }
+
+    // Filtra gli annunci dell'utente
+    static void ricercaAnnunciUtente(Class<? extends Annuncio> tipo,  Utente utente){
+        if(tipo == null){
+            caricaAnnunci(Bacheca.getBacheca().stream().filter(a -> a.isProprietario(utente)).toList());
+        }else{
+            caricaAnnunci(Bacheca.filtraTipo(Bacheca.getBacheca().stream().filter(a -> a.isProprietario(utente)).toList(), tipo));
+        }
+    }
+
+    // Filtra gli annunci dell'utente
+    static void ricercaAnnunciUtente(String chiavi, Class<? extends Annuncio> tipo,  Utente utente){
+        if(tipo == null){
+            caricaAnnunci(Bacheca.ricerca(Bacheca.getBacheca(), Annuncio.chiaviToLista(chiavi)).stream().filter(a -> a.isProprietario(utente)).toList());
+        }else{
+            caricaAnnunci(Bacheca.filtraTipo(Bacheca.ricerca(Bacheca.getBacheca(), Annuncio.chiaviToLista(chiavi)).stream().filter(a -> a.isProprietario(utente)).toList(), tipo));
+        }
+    }
+
+
 
     static void faiLogin(String email, String password) throws PasswordException, UserListException {
         sessione.setCurrentUser(Utente.loginUtente(email, password));

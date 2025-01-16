@@ -11,12 +11,15 @@ new FormModel {
 			"title": "Bacheca"
 			"minimumSize": new java.awt.Dimension( 640, 480 )
 			"defaultCloseOperation": 2
+			addEvent( new FormEvent( "java.awt.event.WindowListener", "windowClosed", "chiusuraFinestra", true ) )
 			add( new FormContainer( "javax.swing.JToolBar", new FormLayoutManager( class javax.swing.JToolBar ) ) {
 				name: "toolbarBacheca"
+				"floatable": false
 				add( new FormComponent( "javax.swing.JButton" ) {
 					name: "aggiungiButton"
 					"text": "Aggiungi"
 					addEvent( new FormEvent( "java.awt.event.ActionListener", "actionPerformed", "aggiungi", true ) )
+					addEvent( new FormEvent( "java.awt.event.ActionListener", "actionPerformed", "aggiungiAnnuncio", true ) )
 				} )
 				add( new FormComponent( "javax.swing.JButton" ) {
 					name: "rimuoviButton"
@@ -34,6 +37,7 @@ new FormModel {
 					name: "ricercaButton"
 					"text": "Ricerca"
 					addEvent( new FormEvent( "java.awt.event.ActionListener", "actionPerformed", "aggiungi", true ) )
+					addEvent( new FormEvent( "java.awt.event.ActionListener", "actionPerformed", "ricerca", true ) )
 					addEvent( new FormEvent( "java.awt.event.ActionListener", "actionPerformed", "ricerca", true ) )
 				} )
 				add( new FormComponent( "javax.swing.JButton" ) {

@@ -10,7 +10,7 @@ new FormModel {
 			name: "this"
 			"title": "Bacheca - Login"
 			"resizable": false
-			"defaultCloseOperation": 2
+			"defaultCloseOperation": 3
 			add( new FormComponent( "javax.swing.JLabel" ) {
 				name: "benvenutoLabel"
 				"text": "Per poter accedere alla bacheca è necessario effettuare l'accesso:"

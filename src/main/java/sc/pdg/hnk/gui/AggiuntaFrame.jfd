@@ -4,8 +4,8 @@ new FormModel {
 	contentType: "form/swing"
 	root: new FormRoot {
 		add( new FormWindow( "javax.swing.JFrame", new FormLayoutManager( class org.jdesktop.layout.GroupLayout ) {
-			"$horizontalGroup": "par l {seq l {space :::p, par l:::p {comp inserisciButton:::p::p, seq {comp tipologiaLabel:::p::p, space s:::p, comp venditaButton:::p::p, space s:::p, comp acquistoButton:::p::p}, seq {space :p:6:p, comp statoLabel:::p::p, space s:::p, comp statoComboBox:::p:237:p}, seq l {par t {comp nomeLabel:::p::p, comp descrizioneLabel:::p::p, comp prezzoLabel:::p::p}, space s:::p, par l:::p {comp prezzoField::::321:x, comp descrizioneScroll::::321:x, comp nomeField::::321:x}}, seq l {par l {seq {par l {comp minField::l:p:100:p, comp minLabel::l:p::p}, space s:::p}, seq t {comp chiaviLabel:::p::p, space :p:9:p}}, par l {comp chiaviField::t::249:x, comp maxLabel:::p::p, comp maxField:::p:100:p}}}, space ::21:x}}"
-			"$verticalGroup": "par l {seq l {space :::p, par b {comp tipologiaLabel::b:p::p, comp venditaButton::b:p::p, comp acquistoButton::b:p::p}, space s:::p, par b {comp nomeLabel::b:p::p, comp nomeField::b:p::p}, space :::p, par l:::p {comp descrizioneScroll:::::x, comp descrizioneLabel:::::x}, space u:::p, par b {comp prezzoField::b:p::p, comp prezzoLabel::b:p::p}, space :::p, par b {comp statoLabel::b:p::p, comp statoComboBox::b:p::p}, space s:::p, par b {comp minLabel::b:p::p, comp maxLabel::b:p::p}, space :::p, par b {comp maxField::b:p::p, comp minField::b:p::p}, space :::p, par b {comp chiaviField::b:p::p, comp chiaviLabel::b:p::p}, space ::9:x, comp inserisciButton:::p::p, space :::p}}"
+			"$horizontalGroup": "par l {seq l {space :::p, par l {comp inserisciButton:::p::p, seq {comp tipologiaLabel:::p::p, space s:::p, comp venditaButton:::p::p, space s:::p, comp acquistoButton:::p::p}, seq {space :p:6:p, comp statoLabel:::p::p, space s:::p, comp statoComboBox:::p:237:p}, seq l {par t {comp nomeLabel:::p::p, comp descrizioneLabel:::p::p, comp prezzoLabel:::p::p}, space s:::p, par l:::p {comp prezzoField::::321:x, comp nomeField::::321:x, comp descrizioneScroll::l::321:x}}, seq l {par l {seq {par l {comp minField::l:p:100:p, comp minLabel::l:p::p}, space s:::p}, seq t {comp chiaviLabel:::p::p, space :p:9:p}}, par l:::p {seq {par l {comp maxField::l:p:100:p, comp maxLabel::l:p::p}, space s:::p, par l:::p {comp scadenzaLabel:::::x, comp scadenzaField:::::x}}, comp chiaviField:::::x}}}, space ::25:x}}"
+			"$verticalGroup": "par l {seq l {space :::p, par b {comp tipologiaLabel::b:p::p, comp venditaButton::b:p::p, comp acquistoButton::b:p::p}, space s:::p, par b {comp nomeLabel::b:p::p, comp nomeField::b:p::p}, space :::p, par l {comp descrizioneLabel:::p:24:p, comp descrizioneScroll::::32:x}, space :::p, par b {comp prezzoField::b:p::p, comp prezzoLabel::b:p::p}, space :::p, par b {comp statoLabel::b:p::p, comp statoComboBox::b:p::p}, space s:::p, par b {comp minLabel::b:p::p, comp maxLabel::b:p::p, comp scadenzaLabel::b:p::p}, space :::p, par b {comp maxField::b:p::p, comp minField::b:p::p, comp scadenzaField::b:p::p}, space :::p, par b {comp chiaviLabel::b:p::p, comp chiaviField::b:p::p}, space :p:9:p, comp inserisciButton:::p::p, space :::p}}"
 		} ) {
 			name: "this"
 			"title": "Bacheca - Inserimento annuncio"
@@ -89,6 +89,14 @@ new FormModel {
 			add( new FormComponent( "javax.swing.JLabel" ) {
 				name: "chiaviLabel"
 				"text": "Chiavi"
+			} )
+			add( new FormComponent( "javax.swing.JTextField" ) {
+				name: "scadenzaField"
+				"enabled": false
+			} )
+			add( new FormComponent( "javax.swing.JLabel" ) {
+				name: "scadenzaLabel"
+				"text": "Data scadenza: (dd-mm-yyyy)"
 			} )
 		}, new FormLayoutConstraints( null ) {
 			"location": new java.awt.Point( 0, 0 )

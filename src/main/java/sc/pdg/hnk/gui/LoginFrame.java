@@ -50,7 +50,7 @@ public class LoginFrame extends JFrame {
         //======== this ========
         setTitle("Bacheca - Login");
         setResizable(false);
-        setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
+        setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
         var contentPane = getContentPane();
 
         //---- benvenutoLabel ----

@@ -9,6 +9,8 @@ new FormModel {
 		} ) {
 			name: "this"
 			"title": "Bacheca - Registrazione nuovo utente"
+			"defaultCloseOperation": 2
+			addEvent( new FormEvent( "java.awt.event.WindowListener", "windowClosed", "chiusuraFinestra", true ) )
 			add( new FormComponent( "javax.swing.JLabel" ) {
 				name: "benvenutoLabel"
 				"text": "Crezione di un nuovo account utente"

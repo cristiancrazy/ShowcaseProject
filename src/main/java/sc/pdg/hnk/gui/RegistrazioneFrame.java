@@ -31,11 +31,14 @@ public class RegistrazioneFrame extends JFrame {
         try{
             ComandiGUI.faiRegistrazione(this.emailField.getText(), this.passwordField.getText(), this.usernameField.getText());
             JOptionPane.showMessageDialog(null, "Registrazione utente effettuata con successo.", "Account aggiunto", JOptionPane.INFORMATION_MESSAGE);
-            new LoginFrame().setVisible(true);
             this.dispose();
         }catch (UserListException ecc){
             JOptionPane.showMessageDialog(null, ecc.getMessage(), "Errore - Registrazione", JOptionPane.ERROR_MESSAGE);
         }
+    }
+
+    private void chiusuraFinestra(WindowEvent e) {
+        new LoginFrame().setVisible(true);
     }
 
     private void initComponents() {
@@ -53,6 +56,13 @@ public class RegistrazioneFrame extends JFrame {
 
         //======== this ========
         setTitle("Bacheca - Registrazione nuovo utente");
+        setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
+        addWindowListener(new WindowAdapter() {
+            @Override
+            public void windowClosed(WindowEvent e) {
+                chiusuraFinestra(e);
+            }
+        });
         var contentPane = getContentPane();
 
         //---- benvenutoLabel ----

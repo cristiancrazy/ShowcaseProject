@@ -4,9 +4,12 @@
 
 package sc.pdg.hnk.gui;
 
+import java.awt.event.*;
 import sc.pdg.hnk.app.annuncio.Acquisto;
 import sc.pdg.hnk.app.annuncio.Annuncio;
 import sc.pdg.hnk.app.annuncio.Vendita;
+import sc.pdg.hnk.app.bacheca.Bacheca;
+import sc.pdg.hnk.app.bacheca.RemoveException;
 
 import javax.swing.*;
 import javax.swing.GroupLayout;
@@ -18,9 +21,12 @@ import java.time.format.DateTimeFormatter;
  * @author Cristian
  */
 public class AnnuncioPanel extends JPanel {
+    private final Annuncio riferimento;
+
     public AnnuncioPanel(Annuncio annuncio) {
         initComponents();
         // Parsing dell'annuncio
+        this.riferimento = annuncio;
         this.setBorder(new LineBorder(Color.BLACK));
         descrizioneField.setText(annuncio.getDescrizione());
         proprietarioLabel.setText("Di: " + annuncio.getProprietario().getNome());
@@ -37,6 +43,34 @@ public class AnnuncioPanel extends JPanel {
         }
     }
 
+    public void abilitaModifica(){
+        this.eliminaButton.setVisible(true);
+        this.aggiungiChiaveButton.setVisible(true);
+    }
+
+    private void aggiungiChiave(ActionEvent e) {
+        String chiave = JOptionPane.showInputDialog(null, "Aggiungi una nuova chiave all'annuncio selezionato", "Nuova chiave", JOptionPane.PLAIN_MESSAGE);
+        if(chiave == null){
+            // Operazione annullata
+            return;
+        }
+
+        if(!chiave.isEmpty()){
+            riferimento.aggiungiChiave(chiave);
+            JOptionPane.showMessageDialog(null, "Chiave: "+chiave+"\naggiunta all'annuncio.", "Parola chiave aggiunta", JOptionPane.INFORMATION_MESSAGE);
+        }else{
+            JOptionPane.showMessageDialog(null, "La chiave non è stata aggiunta", "Parola chiave non aggiunta", JOptionPane.ERROR_MESSAGE);
+        }
+    }
+
+    private void elimina(ActionEvent e) {
+        try{
+            ComandiGUI.rimuoviAnnuncio(this.riferimento.getIDAnnuncio());
+        }catch(RemoveException ecc){
+            JOptionPane.showMessageDialog(null, ecc.getMessage(), "Errore - Accesso negato", JOptionPane.ERROR_MESSAGE);
+        }
+    }
+
     private void initComponents() {
         // JFormDesigner - Component initialization - DO NOT MODIFY  //GEN-BEGIN:initComponents  @formatter:off
         // Generated using JFormDesigner Educational license - Cristian Capraro
@@ -47,6 +81,8 @@ public class AnnuncioPanel extends JPanel {
         statoLabel = new JLabel();
         scadenzaLabel = new JLabel();
         prezzoLabel = new JLabel();
+        eliminaButton = new JButton();
+        aggiungiChiaveButton = new JButton();
 
         //======== this ========
 
@@ -76,6 +112,16 @@ public class AnnuncioPanel extends JPanel {
         prezzoLabel.setFont(prezzoLabel.getFont().deriveFont(prezzoLabel.getFont().getSize() + 4f));
         prezzoLabel.setHorizontalAlignment(SwingConstants.RIGHT);
 
+        //---- eliminaButton ----
+        eliminaButton.setText("Elimina");
+        eliminaButton.setVisible(false);
+        eliminaButton.addActionListener(e -> elimina(e));
+
+        //---- aggiungiChiaveButton ----
+        aggiungiChiaveButton.setText("Aggiungi chiave");
+        aggiungiChiaveButton.setVisible(false);
+        aggiungiChiaveButton.addActionListener(e -> aggiungiChiave(e));
+
         GroupLayout layout = new GroupLayout(this);
         setLayout(layout);
         layout.setHorizontalGroup(
@@ -86,15 +132,18 @@ public class AnnuncioPanel extends JPanel {
                         .addComponent(wrapperDescrizione, GroupLayout.Alignment.LEADING)
                         .addGroup(GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
                             .addComponent(nomeLabel)
-                            .addGap(0, 362, Short.MAX_VALUE))
+                            .addGap(0, 354, Short.MAX_VALUE))
                         .addGroup(GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
                             .addComponent(proprietarioLabel, GroupLayout.PREFERRED_SIZE, 120, GroupLayout.PREFERRED_SIZE)
                             .addPreferredGap(LayoutStyle.ComponentPlacement.UNRELATED)
                             .addComponent(statoLabel, GroupLayout.PREFERRED_SIZE, 120, GroupLayout.PREFERRED_SIZE)
-                            .addPreferredGap(LayoutStyle.ComponentPlacement.RELATED, 16, Short.MAX_VALUE)
+                            .addPreferredGap(LayoutStyle.ComponentPlacement.RELATED, 10, Short.MAX_VALUE)
                             .addComponent(scadenzaLabel, GroupLayout.PREFERRED_SIZE, 120, GroupLayout.PREFERRED_SIZE))
                         .addGroup(layout.createSequentialGroup()
-                            .addGap(0, 268, Short.MAX_VALUE)
+                            .addComponent(eliminaButton)
+                            .addPreferredGap(LayoutStyle.ComponentPlacement.RELATED)
+                            .addComponent(aggiungiChiaveButton)
+                            .addPreferredGap(LayoutStyle.ComponentPlacement.RELATED, 260, Short.MAX_VALUE)
                             .addComponent(prezzoLabel, GroupLayout.PREFERRED_SIZE, 120, GroupLayout.PREFERRED_SIZE)))
                     .addContainerGap())
         );
@@ -111,7 +160,13 @@ public class AnnuncioPanel extends JPanel {
                         .addComponent(statoLabel)
                         .addComponent(scadenzaLabel))
                     .addPreferredGap(LayoutStyle.ComponentPlacement.UNRELATED)
-                    .addComponent(prezzoLabel, GroupLayout.DEFAULT_SIZE, 22, Short.MAX_VALUE)
+                    .addGroup(layout.createParallelGroup()
+                        .addComponent(prezzoLabel, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addGroup(layout.createSequentialGroup()
+                            .addGroup(layout.createParallelGroup(GroupLayout.Alignment.BASELINE)
+                                .addComponent(eliminaButton)
+                                .addComponent(aggiungiChiaveButton))
+                            .addGap(0, 0, Short.MAX_VALUE)))
                     .addContainerGap())
         );
         // JFormDesigner - End of component initialization  //GEN-END:initComponents  @formatter:on
@@ -126,5 +181,7 @@ public class AnnuncioPanel extends JPanel {
     private JLabel statoLabel;
     private JLabel scadenzaLabel;
     private JLabel prezzoLabel;
+    private JButton eliminaButton;
+    private JButton aggiungiChiaveButton;
     // JFormDesigner - End of variables declaration  //GEN-END:variables  @formatter:on
 }

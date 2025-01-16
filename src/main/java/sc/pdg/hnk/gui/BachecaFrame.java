@@ -27,10 +27,6 @@ public class BachecaFrame extends JFrame {
         };
     }
 
-    private void rimuovi(ActionEvent e) {
-        // TODO add your code here
-    }
-
     private void ricerca(ActionEvent e) {
         if(!this.ricerca.isVisible()){
             this.ricerca.setVisible(true);
@@ -58,17 +54,28 @@ public class BachecaFrame extends JFrame {
         new LoginFrame().setVisible(true);
     }
 
-    private void aggiungi(ActionEvent e) {
-        // TODO add your code here
+    private void modificaToggle(ActionEvent e) {
+        if(rimuoviToggle.isSelected()){
+            this.aggiungiButton.setEnabled(false);
+            this.ricercaButton.setEnabled(false);
+            this.pulisciButton.setEnabled(false);
+            this.salvaButton.setEnabled(false);
+            ComandiGUI.caricaAnnunciModificabili();
+        }else{
+            this.aggiungiButton.setEnabled(true);
+            this.ricercaButton.setEnabled(true);
+            this.pulisciButton.setEnabled(true);
+            this.salvaButton.setEnabled(true);
+            ComandiGUI.ricaricaBacheca();
+        }
     }
-
 
     private void initComponents() {
         // JFormDesigner - Component initialization - DO NOT MODIFY  //GEN-BEGIN:initComponents  @formatter:off
         // Generated using JFormDesigner Educational license - Cristian Capraro
         toolbarBacheca = new JToolBar();
         aggiungiButton = new JButton();
-        rimuoviButton = new JButton();
+        rimuoviToggle = new JToggleButton();
         ricercaButton = new JButton();
         pulisciButton = new JButton();
         salvaButton = new JButton();
@@ -96,43 +103,27 @@ public class BachecaFrame extends JFrame {
 
             //---- aggiungiButton ----
             aggiungiButton.setText("Aggiungi");
-            aggiungiButton.addActionListener(e -> {
-			aggiungi(e);
-			aggiungiAnnuncio(e);
-		});
+            aggiungiButton.addActionListener(e -> aggiungiAnnuncio(e));
             toolbarBacheca.add(aggiungiButton);
 
-            //---- rimuoviButton ----
-            rimuoviButton.setText("Rimuovi");
-            rimuoviButton.addActionListener(e -> {
-			aggiungi(e);
-			rimuovi(e);
-		});
-            toolbarBacheca.add(rimuoviButton);
+            //---- rimuoviToggle ----
+            rimuoviToggle.setText("Modifica");
+            rimuoviToggle.addActionListener(e -> modificaToggle(e));
+            toolbarBacheca.add(rimuoviToggle);
 
             //---- ricercaButton ----
             ricercaButton.setText("Ricerca");
-            ricercaButton.addActionListener(e -> {
-			aggiungi(e);
-			ricerca(e);
-			ricerca(e);
-		});
+            ricercaButton.addActionListener(e -> ricerca(e));
             toolbarBacheca.add(ricercaButton);
 
             //---- pulisciButton ----
             pulisciButton.setText("Pulisci");
-            pulisciButton.addActionListener(e -> {
-			aggiungi(e);
-			pulisci(e);
-		});
+            pulisciButton.addActionListener(e -> pulisci(e));
             toolbarBacheca.add(pulisciButton);
 
             //---- salvaButton ----
             salvaButton.setText("Salva");
-            salvaButton.addActionListener(e -> {
-			aggiungi(e);
-			salva(e);
-		});
+            salvaButton.addActionListener(e -> salva(e));
             toolbarBacheca.add(salvaButton);
             toolbarBacheca.add(spaziatore);
 
@@ -162,7 +153,7 @@ public class BachecaFrame extends JFrame {
     // Generated using JFormDesigner Educational license - Cristian Capraro
     private JToolBar toolbarBacheca;
     private JButton aggiungiButton;
-    private JButton rimuoviButton;
+    private JToggleButton rimuoviToggle;
     private JButton ricercaButton;
     private JButton pulisciButton;
     private JButton salvaButton;
@@ -171,7 +162,6 @@ public class BachecaFrame extends JFrame {
     private JScrollPane scrollAnnunci;
     private JPanel panelAnnunci;
     // JFormDesigner - End of variables declaration  //GEN-END:variables  @formatter:on
-
 
     public JPanel getPanelAnnunci() {
         return panelAnnunci;

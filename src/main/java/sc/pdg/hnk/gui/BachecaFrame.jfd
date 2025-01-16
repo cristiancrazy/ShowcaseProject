@@ -18,33 +18,26 @@ new FormModel {
 				add( new FormComponent( "javax.swing.JButton" ) {
 					name: "aggiungiButton"
 					"text": "Aggiungi"
-					addEvent( new FormEvent( "java.awt.event.ActionListener", "actionPerformed", "aggiungi", true ) )
 					addEvent( new FormEvent( "java.awt.event.ActionListener", "actionPerformed", "aggiungiAnnuncio", true ) )
 				} )
-				add( new FormComponent( "javax.swing.JButton" ) {
-					name: "rimuoviButton"
-					"text": "Rimuovi"
-					addEvent( new FormEvent( "java.awt.event.ActionListener", "actionPerformed", "aggiungi", true ) )
-					addEvent( new FormEvent( "java.awt.event.ActionListener", "actionPerformed", "rimuovi", true ) )
+				add( new FormComponent( "javax.swing.JToggleButton" ) {
+					name: "rimuoviToggle"
+					"text": "Modifica"
+					addEvent( new FormEvent( "java.awt.event.ActionListener", "actionPerformed", "modificaToggle", true ) )
 				} )
 				add( new FormComponent( "javax.swing.JButton" ) {
 					name: "ricercaButton"
 					"text": "Ricerca"
-					addEvent( new FormEvent( "java.awt.event.ActionListener", "actionPerformed", "aggiungi", true ) )
-					addEvent( new FormEvent( "java.awt.event.ActionListener", "actionPerformed", "ricerca", true ) )
 					addEvent( new FormEvent( "java.awt.event.ActionListener", "actionPerformed", "ricerca", true ) )
 				} )
 				add( new FormComponent( "javax.swing.JButton" ) {
 					name: "pulisciButton"
 					"text": "Pulisci"
-					addEvent( new FormEvent( "java.awt.event.ActionListener", "actionPerformed", "aggiungi", true ) )
-					addEvent( new FormEvent( "java.awt.event.ActionListener", "actionPerformed", "pulisci", true ) )
 					addEvent( new FormEvent( "java.awt.event.ActionListener", "actionPerformed", "pulisci", true ) )
 				} )
 				add( new FormComponent( "javax.swing.JButton" ) {
 					name: "salvaButton"
 					"text": "Salva"
-					addEvent( new FormEvent( "java.awt.event.ActionListener", "actionPerformed", "aggiungi", true ) )
 					addEvent( new FormEvent( "java.awt.event.ActionListener", "actionPerformed", "salva", true ) )
 				} )
 				add( new FormComponent( "com.jformdesigner.designer.wrapper.VSpacer" ) {

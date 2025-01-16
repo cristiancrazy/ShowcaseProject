@@ -97,6 +97,21 @@ public class ComandiGUI {
     }
 
     /**
+     * Carica nella sezione rimuovi gli annunci eliminabili dall'utente
+     */
+    static void caricaAnnunciModificabili(){
+        bacheca.getPanelAnnunci().removeAll();
+
+        for(Annuncio a : Bacheca.getBacheca().stream().filter(a -> a.isProprietario(getUtenteCorrente())).toList()){
+            AnnuncioPanel panel = new AnnuncioPanel(a);
+            panel.abilitaModifica();
+            bacheca.getPanelAnnunci().add(panel);
+        }
+        bacheca.repaint();
+        bacheca.revalidate();
+    }
+
+    /**
      * Aggiunge un annuncio in bacheca
      * @param annuncio annuncio da aggiungere
      */
@@ -157,6 +172,16 @@ public class ComandiGUI {
         }else{
             caricaAnnunci(Bacheca.filtraTipo(Bacheca.ricerca(Bacheca.getBacheca(), Annuncio.chiaviToLista(chiavi)).stream().filter(a -> a.isProprietario(utente)).toList(), tipo));
         }
+    }
+
+    /**
+     * Rimuove l'annuncio tramite l'id
+     * @param IDAnnuncio ID dell'annuncio
+     * @throws RemoveException Eccezione specifica per errore nella rimozione dell'annuncio
+     */
+    static void rimuoviAnnuncio(String IDAnnuncio) throws RemoveException {
+        Bacheca.rimuoviAnnuncio(IDAnnuncio, sessione.getCurrentUser());
+        caricaAnnunciModificabili();
     }
 
 

@@ -18,6 +18,7 @@ import javax.swing.GroupLayout;
 public class RicercaFrame extends JFrame {
     public RicercaFrame() {
         initComponents();
+        this.setResizable(false);
     }
 
     private void ricerca(ActionEvent e) {
@@ -27,21 +28,21 @@ public class RicercaFrame extends JFrame {
         if(mieiCheck.isSelected()){
             if(vendita&&acquisto){
                 if(chiaviField.getText().isEmpty()){
-                    ComandiGUI.ricercaAnnunciUtente(null, ComandiGUI.getUtenteCorrente());
+                    ComandiGUI.ricercaAnnuncio(ComandiGUI.getUtenteCorrente());
                 }else{
-                    ComandiGUI.ricercaAnnunciUtente(chiaviField.getText(), null, ComandiGUI.getUtenteCorrente());
+                    ComandiGUI.ricercaAnnuncio(chiaviField.getText(), ComandiGUI.getUtenteCorrente());
                 }
             }else if(vendita){
                 if(chiaviField.getText().isEmpty()){
-                    ComandiGUI.ricercaAnnunciUtente(Vendita.class, ComandiGUI.getUtenteCorrente());
+                    ComandiGUI.ricercaAnnuncio(Vendita.class, ComandiGUI.getUtenteCorrente());
                 }else{
-                    ComandiGUI.ricercaAnnunciUtente(this.chiaviField.getText(), Vendita.class, ComandiGUI.getUtenteCorrente());
+                    ComandiGUI.ricercaAnnuncio(this.chiaviField.getText(), Vendita.class, ComandiGUI.getUtenteCorrente());
                 }
             }else if(acquisto){
                 if(chiaviField.getText().isEmpty()){
-                    ComandiGUI.ricercaAnnunciUtente(Acquisto.class, ComandiGUI.getUtenteCorrente());
+                    ComandiGUI.ricercaAnnuncio(Acquisto.class, ComandiGUI.getUtenteCorrente());
                 }else{
-                    ComandiGUI.ricercaAnnunciUtente(this.chiaviField.getText(), Acquisto.class, ComandiGUI.getUtenteCorrente());
+                    ComandiGUI.ricercaAnnuncio(this.chiaviField.getText(), Acquisto.class, ComandiGUI.getUtenteCorrente());
                 }
             }else{
                 JOptionPane.showMessageDialog(null, "Selezionare la tipologia di annuncio");
@@ -49,9 +50,9 @@ public class RicercaFrame extends JFrame {
         }else{
             if(vendita&&acquisto){
                 if(chiaviField.getText().isEmpty()){
-                    ComandiGUI.ricercaAnnuncio(null);
+                    ComandiGUI.ricaricaBacheca();
                 }else{
-                    ComandiGUI.ricercaAnnuncio(this.chiaviField.getText(), null);
+                    ComandiGUI.ricercaAnnuncio(this.chiaviField.getText());
                 }
             }else if(vendita){
                 if(chiaviField.getText().isEmpty()){

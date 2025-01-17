@@ -29,9 +29,23 @@ public class Utente implements Serializable {
      * @param email email del nuovo utente
      * @param nome nome del nuovo utente
      * @throws UserListException nel caso in cui l'utente esiste già.
+     * @throws UserCreationException nel caso in cui non è stato possibile creare l'utente.
      * @return restituisce l'oggetto Utente
      */
-    public static Utente creaUtente(String password,String email, String nome) throws UserListException {
+    public static Utente creaUtente(String password,String email, String nome) throws UserListException, UserCreationException {
+        // Verifica inserimento parametri
+        if(password.isEmpty()){
+            throw new UserCreationException("La password non è stata specificata.");
+        }
+
+        if(!email.matches("^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}$")){
+            throw new UserCreationException("L'email non è valida.");
+        }
+
+        if(nome.isEmpty()){
+            throw new UserCreationException("Il nome utente non è valido");
+        }
+
         // Istanza del nuovo utente
         Utente u = new Utente(password, email, nome);
 

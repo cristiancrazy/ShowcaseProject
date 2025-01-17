@@ -47,6 +47,16 @@ public class Bacheca implements Iterable<Annuncio> {
     }
 
     /**
+     * Filtra gli annunci in base al proprietario fornito
+     * @param annunci Lista di annunci dal quale filtrare
+     * @param proprietario Proprietario
+     * @return lista di annunci filtrata
+     */
+    public static List<Annuncio> filtraProprietario(List<Annuncio> annunci, Utente proprietario){
+        return annunci.stream().filter(s -> s.isProprietario(proprietario)).toList();
+    }
+
+    /**
      * Filtraggio annunci per tipo
      * @param annunci Lista di annunci
      * @param tipo tipo sul quale effettuare il filtraggio, solo figli di annuncio
@@ -138,34 +148,7 @@ public class Bacheca implements Iterable<Annuncio> {
      */
     @Override
     public Iterator<Annuncio> iterator() {
-        return new IteratoreBacheca();
-    }
-
-    /**
-     * Classe per l'iteratore della bacheca
-     */
-    private static class IteratoreBacheca implements Iterator<Annuncio>{
-        private int indice = 0;
-
-        /**
-         * Controllo per il valore successivo
-         * @return ritorna l'indice se minore della grandezza di bacheca
-         */
-        @Override
-        public boolean hasNext() {
-            return this.indice < bacheca.size();
-        }
-
-        /**
-         * Ritorna l'annuncio successivo
-         * @return Annuncio successivo
-         */
-        @Override
-        public Annuncio next() {
-            Annuncio attuale = bacheca.get(this.indice);
-            ++this.indice;
-            return attuale;
-        }
+        return Bacheca.getBacheca().iterator();
     }
 
     /**

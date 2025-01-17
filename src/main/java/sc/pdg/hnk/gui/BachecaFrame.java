@@ -14,8 +14,8 @@ import javax.swing.*;
  * @author Cristian
  */
 public class BachecaFrame extends JFrame {
-    private AggiuntaFrame aggiunta = new AggiuntaFrame();
-    private RicercaFrame  ricerca = new RicercaFrame();
+    private final AggiuntaFrame aggiunta = new AggiuntaFrame();
+    private final RicercaFrame   ricerca = new RicercaFrame();
 
     public BachecaFrame() {
         initComponents();

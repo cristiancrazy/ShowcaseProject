@@ -37,10 +37,20 @@ public class Vendita extends Annuncio implements Serializable {
      * @param chiavi stringa di parole chiave separate da virgola.
      * @param prezzo prezzo dell'oggetto in vendita
      * @param stato stato di usura dell'oggetto in vendita.
+     * @throws AnnuncioException lanciata nel caso in cui i valori non siano validi
      */
     @SuppressWarnings("unused")
-    public Vendita(String nome, String descrizione , Utente proprietario, String chiavi, Double prezzo, Condizioni stato) {
+    public Vendita(String nome, String descrizione, Utente proprietario, String chiavi, Double prezzo, Condizioni stato) throws AnnuncioException {
         super(nome, descrizione,proprietario, chiavi);
+
+        // Check validità campi
+        if(prezzo == null){
+            throw new AnnuncioException("Non è stato specificato il prezzo");
+        }
+        if(stato == null){
+            throw new AnnuncioException("Non è stata specificata la condizione");
+        }
+
         this.prezzo = prezzo;
         this.scadenza = LocalDate.now().plusMonths(1);
         this.stato=stato;
@@ -56,8 +66,20 @@ public class Vendita extends Annuncio implements Serializable {
      * @param scadenza data di scadenza dell'annuncio in vendita
      * @param stato stato di usura dell'oggetto in vendita
      */
-    public Vendita(String nome, String descrizione, Utente proprietario, String chiavi, Double prezzo, LocalDate scadenza, Condizioni stato) {
+    public Vendita(String nome, String descrizione, Utente proprietario, String chiavi, Double prezzo, LocalDate scadenza, Condizioni stato) throws AnnuncioException {
         super(nome, descrizione, proprietario, chiavi);
+
+        // Check validità campi
+        if(prezzo == null){
+            throw new AnnuncioException("Non è stato specificato il prezzo");
+        }
+        if(stato == null){
+            throw new AnnuncioException("Non è stata specificata la condizione");
+        }
+        if(scadenza == null){
+            throw new AnnuncioException("Non è stata specificata una scadenza");
+        }
+
         this.prezzo = prezzo;
         this.scadenza = scadenza;
         this.descrizione = descrizione;
@@ -96,7 +118,6 @@ public class Vendita extends Annuncio implements Serializable {
 
     /**
      * Getter per la scadenza
-     * @return Scadenza dell'annuncio
      */
     public LocalDate getScadenza() {
         return scadenza;

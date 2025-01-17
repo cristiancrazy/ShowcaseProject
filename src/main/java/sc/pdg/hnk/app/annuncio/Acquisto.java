@@ -23,11 +23,21 @@ public class Acquisto extends Annuncio implements Serializable {
      * @param chiavi Stringa con separatore contenente le chiavi
      * @param max prezzo massimo
      * @param min prezzo minimo
+     * @throws AnnuncioException lanciata nel caso in cui i valori non siano validi
      */
-    public Acquisto(String nome, String descrizione, Utente proprietario, String chiavi, Double max, Double min){
+    public Acquisto(String nome, String descrizione, Utente proprietario, String chiavi, Double max, Double min) throws AnnuncioException{
         super(nome, descrizione, proprietario, chiavi);
-        this.max = max;
-        this.min = min;
+
+        // Verifica correttezza budget minimo e massimo
+        if(min > max){
+            this.max = min;
+            this.min = max;
+        }else{
+            this.max = max;
+            this.min = min;
+        }
+
+
     }
 
     /**

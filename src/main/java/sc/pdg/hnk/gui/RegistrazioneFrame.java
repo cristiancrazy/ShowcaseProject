@@ -4,6 +4,7 @@
 
 package sc.pdg.hnk.gui;
 
+import sc.pdg.hnk.app.utente.UserCreationException;
 import sc.pdg.hnk.app.utente.UserException;
 import sc.pdg.hnk.app.utente.UserListException;
 
@@ -18,6 +19,7 @@ import javax.swing.GroupLayout;
 public class RegistrazioneFrame extends JFrame {
     public RegistrazioneFrame() {
         initComponents();
+        this.setResizable(false);
     }
 
     private void indietro(ActionEvent e) {
@@ -32,7 +34,7 @@ public class RegistrazioneFrame extends JFrame {
             ComandiGUI.faiRegistrazione(this.emailField.getText(), this.passwordField.getText(), this.usernameField.getText());
             JOptionPane.showMessageDialog(null, "Registrazione utente effettuata con successo.", "Account aggiunto", JOptionPane.INFORMATION_MESSAGE);
             this.dispose();
-        }catch (UserListException ecc){
+        }catch (UserCreationException | UserListException ecc){
             JOptionPane.showMessageDialog(null, ecc.getMessage(), "Errore - Registrazione", JOptionPane.ERROR_MESSAGE);
         }
     }

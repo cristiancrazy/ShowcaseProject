@@ -2,12 +2,14 @@ package sc.pdg.hnk.cli;
 
 import sc.pdg.hnk.app.annuncio.Acquisto;
 import sc.pdg.hnk.app.annuncio.Annuncio;
+import sc.pdg.hnk.app.annuncio.AnnuncioException;
 import sc.pdg.hnk.app.annuncio.Vendita;
 import sc.pdg.hnk.app.bacheca.Bacheca;
 import sc.pdg.hnk.app.bacheca.BachecaIOException;
 import sc.pdg.hnk.app.bacheca.BachecaNotFoundException;
 import sc.pdg.hnk.app.bacheca.RemoveException;
 import sc.pdg.hnk.app.sessione.Sessione;
+import sc.pdg.hnk.app.utente.UserCreationException;
 import sc.pdg.hnk.app.utente.UserException;
 import sc.pdg.hnk.app.utente.UserListException;
 import sc.pdg.hnk.app.utente.Utente;
@@ -438,9 +440,14 @@ public class ComandiCLI {
                     }
 
 
-                    Bacheca.aggiungiAnnuncio(new Vendita(nome, descrizione, sessione.getCurrentUser(), chiavi, prezzo, data, condizione));
+                    try{
+                        Bacheca.aggiungiAnnuncio(new Vendita(nome, descrizione, sessione.getCurrentUser(), chiavi, prezzo, data, condizione));
+                        System.out.println("Annuncio inserito correttamente");
+                    }catch (AnnuncioException ecc){
+                        System.out.println("Errore: "+ecc.getMessage());
+                    }
+
                     ok = true;
-                    System.out.println("Annuncio inserito correttamente");
                     try {
                         TimeUnit.SECONDS.sleep(3);
                     } catch (InterruptedException e) {
@@ -470,8 +477,15 @@ public class ComandiCLI {
                     min = parseDoubleOrDefault(scanner.nextLine());
 
                     // Inserimento annuncio di ricerca e ottenimento correlati
-                    List<Annuncio> correlati = Bacheca.aggiungiAnnuncio(new Acquisto(nome, descrizione, sessione.getCurrentUser(), chiavi, max, min));
-                    System.out.println("Annuncio inserito correttamente");
+                    List<Annuncio> correlati = new ArrayList<>();
+
+                    try{
+                        correlati = Bacheca.aggiungiAnnuncio(new Acquisto(nome, descrizione, sessione.getCurrentUser(), chiavi, max, min));
+                        System.out.println("Annuncio inserito correttamente");
+                    }catch (AnnuncioException ecc) {
+                        System.out.println("Errore: " + ecc.getMessage());
+                    }
+
                     ok = true;
                     try {
                         TimeUnit.SECONDS.sleep(3);
@@ -526,7 +540,7 @@ public class ComandiCLI {
             System.out.println("Utente creato con successo.");
             chiediConferma();
             mostraMenuPrincipale();
-        }catch (UserListException e){
+        }catch (UserListException | UserCreationException e){
             System.out.println(e.getMessage());
             registraUtente();
         }

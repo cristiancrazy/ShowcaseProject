@@ -4,10 +4,12 @@
 
 package sc.pdg.hnk.gui;
 
+import java.awt.*;
 import java.awt.event.*;
 
 import sc.pdg.hnk.app.annuncio.Acquisto;
 import sc.pdg.hnk.app.annuncio.Annuncio;
+import sc.pdg.hnk.app.annuncio.AnnuncioException;
 import sc.pdg.hnk.app.annuncio.Vendita;
 import sc.pdg.hnk.app.bacheca.Bacheca;
 import sc.pdg.hnk.app.utente.Utente;
@@ -17,6 +19,7 @@ import javax.swing.GroupLayout;
 import javax.swing.event.*;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
+import java.time.format.DateTimeParseException;
 import java.util.Arrays;
 import java.util.Objects;
 
@@ -24,7 +27,7 @@ import java.util.Objects;
  * @author Cristian
  */
 public class AggiuntaFrame extends JFrame {
-    @SuppressWarnings("unchecked")
+
     public AggiuntaFrame() {
         initComponents();
         for (Vendita.Condizioni value : Vendita.Condizioni.values()) {
@@ -37,7 +40,8 @@ public class AggiuntaFrame extends JFrame {
         this.prezzoField.setEnabled(true);
         this.statoComboBox.setEnabled(true);
         this.maxField.setEnabled(false);
-        this.minField.setEnabled(false);    }
+        this.minField.setEnabled(false);
+    }
 
         private void acquistoButton(ActionEvent e) {
             this.scadenzaField.setEnabled(false);
@@ -45,14 +49,6 @@ public class AggiuntaFrame extends JFrame {
             this.statoComboBox.setEnabled(false);
             this.maxField.setEnabled(true);
             this.minField.setEnabled(true);
-    }
-
-    private void venditaStateChanged(ChangeEvent e) {
-        // TODO add your code here
-    }
-
-    private void acquistoStateChanged(ChangeEvent e) {
-        // TODO add your code here
     }
 
     private void inserisci(ActionEvent e) {
@@ -78,12 +74,20 @@ public class AggiuntaFrame extends JFrame {
                 try {
                     LocalDate ld = LocalDate.parse(scadenza, DateTimeFormatter.ofPattern("dd-MM-yyyy"));
                     ComandiGUI.aggiungiAnnuncio(new Vendita(nome, descrizione, corrente, chiavi, prezzoFinale, ld, Vendita.Condizioni.valueOf(stato)));
-                }catch (Exception ecc){
+                }catch (DateTimeParseException ecc){
                     JOptionPane.showMessageDialog(null, "Data scadenza non valida.", "Effettuare operazione", JOptionPane.WARNING_MESSAGE);
+                }catch (AnnuncioException ecc){
+                    JOptionPane.showMessageDialog(null, ecc.getMessage(), "Errore", JOptionPane.ERROR_MESSAGE);
                 }
                 return;
             }
-            ComandiGUI.aggiungiAnnuncio(new Vendita(nome, descrizione, corrente, chiavi, prezzoFinale, Vendita.Condizioni.valueOf(stato)));
+
+            try{
+                ComandiGUI.aggiungiAnnuncio(new Vendita(nome, descrizione, corrente, chiavi, prezzoFinale, Vendita.Condizioni.valueOf(stato)));
+            }catch (AnnuncioException ecc){
+                JOptionPane.showMessageDialog(null, ecc.getMessage(), "Errore", JOptionPane.ERROR_MESSAGE);
+            }
+
 
         }else if(this.acquistoButton.isSelected()){
             String nome, descrizione, chiavi, max, min;
@@ -101,7 +105,12 @@ public class AggiuntaFrame extends JFrame {
                 JOptionPane.showMessageDialog(null, "Budget range non valido.", "Effettuare operazione", JOptionPane.WARNING_MESSAGE);
                 return;
             }
-            ComandiGUI.aggiungiAnnuncio(new Acquisto(nome, descrizione, corrente, chiavi, minFinale, maxFinale));
+
+            try{
+                ComandiGUI.aggiungiAnnuncio(new Acquisto(nome, descrizione, corrente, chiavi, minFinale, maxFinale));
+            }catch (AnnuncioException ecc){
+                JOptionPane.showMessageDialog(null, ecc.getMessage(), "Errore", JOptionPane.ERROR_MESSAGE);
+            }
         }else{
             JOptionPane.showMessageDialog(null, "Si prega di selezionare la tipologia di annuncio.", "Effettuare operazione", JOptionPane.INFORMATION_MESSAGE);
         }
@@ -143,12 +152,10 @@ public class AggiuntaFrame extends JFrame {
 
         //---- venditaButton ----
         venditaButton.setText("Vendita");
-        venditaButton.addChangeListener(e -> venditaStateChanged(e));
         venditaButton.addActionListener(e -> venditaButton(e));
 
         //---- acquistoButton ----
         acquistoButton.setText("Ricerca");
-        acquistoButton.addChangeListener(e -> acquistoStateChanged(e));
         acquistoButton.addActionListener(e -> acquistoButton(e));
 
         //---- nomeLabel ----
@@ -249,7 +256,7 @@ public class AggiuntaFrame extends JFrame {
                                         .addComponent(scadenzaLabel, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                                         .addComponent(scadenzaField)))
                                 .addComponent(chiaviField))))
-                    .addContainerGap(25, Short.MAX_VALUE))
+                    .addContainerGap(21, Short.MAX_VALUE))
         );
         contentPaneLayout.setVerticalGroup(
             contentPaneLayout.createParallelGroup()
@@ -266,7 +273,7 @@ public class AggiuntaFrame extends JFrame {
                     .addPreferredGap(LayoutStyle.ComponentPlacement.RELATED)
                     .addGroup(contentPaneLayout.createParallelGroup()
                         .addComponent(descrizioneLabel, GroupLayout.PREFERRED_SIZE, 24, GroupLayout.PREFERRED_SIZE)
-                        .addComponent(descrizioneScroll, GroupLayout.DEFAULT_SIZE, 32, Short.MAX_VALUE))
+                        .addComponent(descrizioneScroll, GroupLayout.DEFAULT_SIZE, 28, Short.MAX_VALUE))
                     .addPreferredGap(LayoutStyle.ComponentPlacement.RELATED)
                     .addGroup(contentPaneLayout.createParallelGroup(GroupLayout.Alignment.BASELINE)
                         .addComponent(prezzoField, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
@@ -319,7 +326,7 @@ public class AggiuntaFrame extends JFrame {
     private JTextField minField;
     private JLabel minLabel;
     private JLabel maxLabel;
-    private JComboBox statoComboBox;
+    private JComboBox<String> statoComboBox;
     private JLabel statoLabel;
     private JButton inserisciButton;
     private JTextField chiaviField;

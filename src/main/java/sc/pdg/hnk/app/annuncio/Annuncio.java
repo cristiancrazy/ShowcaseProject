@@ -29,8 +29,17 @@ public abstract class Annuncio implements Serializable {
      * @param descrizione descrizione dell'annuncio
      * @param proprietario specifica l'utente proprietario dell'annuncio
      * @param chiavi stringa di parole chiave separate da virgola.
+     * @throws AnnuncioException lanciata nel caso in cui i valori non siano validi
      */
-    public Annuncio(String nome, String descrizione, Utente proprietario, String chiavi){
+    public Annuncio(String nome, String descrizione, Utente proprietario, String chiavi) throws AnnuncioException{
+        if(nome.isEmpty()){
+            throw new AnnuncioException("Il nome dell'annuncio non può essere vuoto.");
+        }
+
+        if(proprietario == null){
+            throw new AnnuncioException("L'annuncio deve avere un proprietario");
+        }
+
         this.nome = nome;
         this.proprietario = proprietario;
         this.chiavi = chiaviToLista(chiavi);
@@ -94,11 +103,9 @@ public abstract class Annuncio implements Serializable {
     }
 
     /**
-     * Getter per il nome
-     * @return il nome dell'annuncio
+     * Getter Nome annuncio
+     * @return Nome annuncio
      */
-
-
     public String getNome() {
         return nome;
     }

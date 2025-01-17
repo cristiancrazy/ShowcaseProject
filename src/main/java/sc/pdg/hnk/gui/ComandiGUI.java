@@ -1,20 +1,17 @@
 package sc.pdg.hnk.gui;
 
-import sc.pdg.hnk.app.annuncio.Acquisto;
 import sc.pdg.hnk.app.annuncio.Annuncio;
-import sc.pdg.hnk.app.annuncio.Vendita;
 import sc.pdg.hnk.app.bacheca.Bacheca;
 import sc.pdg.hnk.app.bacheca.BachecaIOException;
 import sc.pdg.hnk.app.bacheca.BachecaNotFoundException;
 import sc.pdg.hnk.app.bacheca.RemoveException;
 import sc.pdg.hnk.app.sessione.Sessione;
 import sc.pdg.hnk.app.utente.PasswordException;
-import sc.pdg.hnk.app.utente.UserException;
+import sc.pdg.hnk.app.utente.UserCreationException;
 import sc.pdg.hnk.app.utente.UserListException;
 import sc.pdg.hnk.app.utente.Utente;
 
 import javax.swing.*;
-import java.util.ArrayList;
 import java.util.List;
 
 public class ComandiGUI {
@@ -92,8 +89,8 @@ public class ComandiGUI {
         for(Annuncio a : annunci){
             bacheca.getPanelAnnunci().add(new AnnuncioPanel(a));
         }
-        bacheca.repaint();
-        bacheca.revalidate();
+        //bacheca.repaint();
+        //bacheca.revalidate();
     }
 
     /**
@@ -102,13 +99,13 @@ public class ComandiGUI {
     static void caricaAnnunciModificabili(){
         bacheca.getPanelAnnunci().removeAll();
 
-        for(Annuncio a : Bacheca.getBacheca().stream().filter(a -> a.isProprietario(getUtenteCorrente())).toList()){
+        for(Annuncio a : Bacheca.filtraProprietario(Bacheca.getBacheca(), sessione.getCurrentUser())){
             AnnuncioPanel panel = new AnnuncioPanel(a);
             panel.abilitaModifica();
             bacheca.getPanelAnnunci().add(panel);
         }
-        bacheca.repaint();
-        bacheca.revalidate();
+        //bacheca.repaint();
+        //bacheca.revalidate();
     }
 
     /**
@@ -121,16 +118,49 @@ public class ComandiGUI {
     }
 
     /**
+     *Caricamento in finestra di annuncio in base all'utente
+     * @param utente Utente per il filtraggio
+     */
+    static void ricercaAnnuncio(Utente utente){
+        caricaAnnunci(Bacheca.filtraProprietario(Bacheca.getBacheca(), utente));
+    }
+
+    /**
+     * Caricamento in finestra di annuncio in base all'utente e alle chiavi
+     * @param chiavi Stringa di chiavi con con separatore
+     * @param utente Utente per il filtraggio
+     */
+    static void ricercaAnnuncio(String chiavi, Utente utente){
+        caricaAnnunci(Bacheca.ricerca(Bacheca.filtraProprietario(Bacheca.getBacheca(), utente), Annuncio.chiaviToLista(chiavi)));
+    }
+
+    /**
+     * Caricamento in finestra di annuncio in base all'utente alle chiavi e al tipo di annuncio
+     * @param chiavi Stringa di chiavi con con separatore
+     * @param tipo Tipo dell'annuncio, Acquisto/Vendita
+     * @param utente Utente per il filtraggio
+     */
+
+    static void ricercaAnnuncio(String chiavi, Class<? extends Annuncio> tipo, Utente utente){
+        caricaAnnunci(Bacheca.ricerca(Bacheca.filtraTipo(Bacheca.filtraProprietario(Bacheca.getBacheca(), utente), tipo), Annuncio.chiaviToLista(chiavi)));
+    }
+
+    /**
+     * Caricamento in finestra di annuncio in base all'utente e al tipo di annuncio
+     * @param tipo Tipo dell'annuncio, Acquisto/Vendita
+     * @param utente Utente per il filtraggio
+     */
+    static void ricercaAnnuncio(Class<? extends Annuncio> tipo, Utente utente){
+        caricaAnnunci(Bacheca.filtraProprietario(Bacheca.filtraTipo(Bacheca.getBacheca(), tipo), utente));
+    }
+
+    /**
      * Ricerca l'annuncio in base al tipo Acquisto/Vendita e alla chiave
-     * @param chiavi Chiavi dell'annuncio
+     * @param chiavi Stringa di chiavi con con separatore
      * @param tipo Tipo dell'annuncio, Acquisto/Vendita
      */
     static void ricercaAnnuncio(String chiavi, Class<? extends Annuncio> tipo){
-        if(tipo == null){
-            caricaAnnunci(Bacheca.ricerca(Bacheca.getBacheca(), Annuncio.chiaviToLista(chiavi)));
-        }else{
-            caricaAnnunci(Bacheca.filtraTipo(Bacheca.ricerca(Bacheca.getBacheca(), Annuncio.chiaviToLista(chiavi)), tipo));
-        }
+        caricaAnnunci(Bacheca.filtraTipo(Bacheca.ricerca(Bacheca.getBacheca(), Annuncio.chiaviToLista(chiavi)), tipo));
     }
 
     /**
@@ -138,40 +168,15 @@ public class ComandiGUI {
      * @param tipo Tipo dell'annuncio, Acquisto/Vendita
      */
     static void ricercaAnnuncio(Class<? extends Annuncio> tipo){
-        if(tipo == null){
-            caricaAnnunci(Bacheca.getBacheca());
-        }else{
-            caricaAnnunci(Bacheca.filtraTipo(Bacheca.getBacheca(), tipo));
-        }
+        caricaAnnunci(Bacheca.filtraTipo(Bacheca.getBacheca(), tipo));
     }
 
     /**
-     * Ricerca l'annuncio in base al tipo Acquisto/Vendita e in base all'utente
-     * @param tipo Tipo dell'annuncio, Acquisto/Vendita
-     * @param utente Utente per la ricerca
+     * Caricamento in finestra di annuncio in base alle chiavi
+     * @param chiavi Stringa di chiavi con con separatore
      */
-    // Filtra gli annunci dell'utente
-    static void ricercaAnnunciUtente(Class<? extends Annuncio> tipo,  Utente utente){
-        if(tipo == null){
-            caricaAnnunci(Bacheca.getBacheca().stream().filter(a -> a.isProprietario(utente)).toList());
-        }else{
-            caricaAnnunci(Bacheca.filtraTipo(Bacheca.getBacheca().stream().filter(a -> a.isProprietario(utente)).toList(), tipo));
-        }
-    }
-
-    /**
-     * Ricerca l'annuncio in base al tipo Acquisto/Vendita e in base all'utente
-     * @param chiavi Chiavi dell'annuncio
-     * @param tipo Tipo dell'annuncio, Acquisto/Vendita
-     * @param utente Utente per la ricerca
-     */
-    // Filtra gli annunci dell'utente
-    static void ricercaAnnunciUtente(String chiavi, Class<? extends Annuncio> tipo,  Utente utente){
-        if(tipo == null){
-            caricaAnnunci(Bacheca.ricerca(Bacheca.getBacheca(), Annuncio.chiaviToLista(chiavi)).stream().filter(a -> a.isProprietario(utente)).toList());
-        }else{
-            caricaAnnunci(Bacheca.filtraTipo(Bacheca.ricerca(Bacheca.getBacheca(), Annuncio.chiaviToLista(chiavi)).stream().filter(a -> a.isProprietario(utente)).toList(), tipo));
-        }
+    static void ricercaAnnuncio(String chiavi){
+        caricaAnnunci(Bacheca.ricerca(Bacheca.getBacheca(), Annuncio.chiaviToLista(chiavi)));
     }
 
     /**
@@ -204,7 +209,7 @@ public class ComandiGUI {
      * @throws UserListException Eccezione specifica per la lista utenti
      */
 
-    static void faiRegistrazione(String email,String password,String nome) throws UserListException{
+    static void faiRegistrazione(String email,String password,String nome) throws UserListException, UserCreationException {
             Utente nuovo = Utente.creaUtente(password, email, nome);
             sessione.setCurrentUser(nuovo);
             store(); // Salvataggio

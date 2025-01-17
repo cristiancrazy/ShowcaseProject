@@ -91,7 +91,6 @@ public class Bacheca implements Iterable<Annuncio> {
      * @throws RemoveException eccezione generata quando l'utente non è il proprietario dell'annuncio
      */
     public static boolean rimuoviAnnuncio(String IDAnnuncio, Utente proprietario) throws RemoveException {
-
         for(Annuncio a : bacheca){
             if (Objects.equals(a.getIDAnnuncio(), IDAnnuncio)){
                 if(a.isProprietario(proprietario)) {
@@ -126,19 +125,16 @@ public class Bacheca implements Iterable<Annuncio> {
      * @param file path del file dove vengono caricati i dati
      * @throws BachecaIOException Eccezione generata da un errore di IO
      * @throws BachecaNotFoundException Eccezione generata dalla mancanza del file nel path specificato
-     * @throws BachecaParsingException Eccezione generata da un errore di lettura del file
      */
     @SuppressWarnings("unchecked")
-    public static void recupero(Path file) throws BachecaIOException, BachecaNotFoundException, BachecaParsingException{
+    public static void recupero(Path file) throws BachecaIOException, BachecaNotFoundException{
         try(ObjectInputStream in = new ObjectInputStream(new FileInputStream(file.toFile()))) {
             bacheca = (List<Annuncio>) in.readObject();
             Utente.setUserList((HashMap<String, Utente>) in.readObject());
         } catch (FileNotFoundException e) {
             throw new BachecaNotFoundException("Errore IO - importazione bacheca/utenti: file non trovato.");
-        } catch (IOException e) {
+        } catch (ClassNotFoundException | IOException e) {
             throw new BachecaIOException("Errore IO - importazione bacheca/utenti.");
-        } catch (ClassNotFoundException e) {
-            throw new BachecaParsingException("Errore importazione bacheca/utenti.");
         }
     }
 

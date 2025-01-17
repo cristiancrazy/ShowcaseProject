@@ -24,25 +24,25 @@ public class TestUtente {
     }
 
     @Test
-    public void testCreaUtenteEmailNonValida() {
+    public void testEmailNonValida() {
         // Test con email non valida
         assertThrows(UserCreationException.class, () -> Utente.creaUtente("password123", "invalid-email", "Giovanni"));
     }
 
     @Test
-    public void testCreaUtentePasswordVuota() {
+    public void testPasswordVuota() {
         // Test con password vuota
         assertThrows(UserCreationException.class, () -> Utente.creaUtente("", "test@example.com", "Giovanni"));
     }
 
     @Test
-    public void testCreaUtenteNomeVuoto() {
+    public void testNomeVuoto() {
         // Test con nome vuoto
         assertThrows(UserCreationException.class, () -> Utente.creaUtente("password123", "test@example.com", ""));
     }
 
     @Test
-    public void testCreaUtenteGiaEsistente() throws UserListException, UserCreationException {
+    public void testGiaEsistente() throws UserListException, UserCreationException {
         // Test che tenta di creare un utente con email già esistente
         Utente.creaUtente("password123", "test@example.com", "Giovanni");
         assertThrows(UserListException.class, () -> Utente.creaUtente("password123", "test@example.com", "Simone"));

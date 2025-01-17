@@ -25,13 +25,13 @@ public class TestSessione {
 
     @Test
     void testSetCurrentUser() {
-        // Testa che l'utente corrente possa essere impostato e recuperato correttamente
+        // Testa che l'utente corrente possa essere impostato e recuperato
         sessione.setCurrentUser(utente);
         assertEquals(utente, sessione.getCurrentUser());
     }
 
     @Test
-    void testGetFileBackupPredefinito() {
+    void testGetBackupDefault() {
         // Testa che il percorso del file di backup sia il valore predefinito
         Path expectedPath = Path.of("./bacheca.dat");
         assertEquals(expectedPath, sessione.getFileBackup());

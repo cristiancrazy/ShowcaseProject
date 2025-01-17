@@ -39,9 +39,8 @@ public class Vendita extends Annuncio implements Serializable {
      * @param stato stato di usura dell'oggetto in vendita.
      * @throws AnnuncioException lanciata nel caso in cui i valori non siano validi
      */
-    @SuppressWarnings("unused")
     public Vendita(String nome, String descrizione, Utente proprietario, String chiavi, Double prezzo, Condizioni stato) throws AnnuncioException {
-        super(nome, descrizione,proprietario, chiavi);
+        super(nome, descrizione, proprietario, chiavi);
 
         // Check validità campi
         if(prezzo == null){
@@ -83,7 +82,7 @@ public class Vendita extends Annuncio implements Serializable {
         this.prezzo = prezzo;
         this.scadenza = scadenza;
         this.descrizione = descrizione;
-        this.stato=stato;
+        this.stato = stato;
     }
 
 

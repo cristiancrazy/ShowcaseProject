@@ -29,7 +29,7 @@ class TestAcquisto {
     }
 
     @Test
-    void testCreazioneAnnuncioAcquistoValido() {
+    void testCreazioneAnnuncioAcquisto() {
         // Verifica che l'annuncio venga creato correttamente
         assertNotNull(acquistoValido);
         assertEquals("Annuncio 1", acquistoValido.getNome());
@@ -38,7 +38,7 @@ class TestAcquisto {
     }
 
     @Test
-    void testCreazioneAnnuncioAcquistoConBudgetInvertito() {
+    void testCreazioneBudgetInvertito() {
         // Verifica che i valori min e max siano corretti anche se inseriti in ordine invertito
         assertNotNull(acquistoInvertito);
         assertEquals(500.0, acquistoInvertito.getMin());
@@ -46,7 +46,7 @@ class TestAcquisto {
     }
 
     @Test
-    void testCreazioneAnnuncioAcquistoConBudgetCorretto() {
+    void testCreazioneBudgetCorretto() {
         // Verifica che l'annuncio con il bilancio corretto venga creato senza problemi
         assertNotNull(acquistoConBudgetCorretto);
         assertEquals(1500.0, acquistoConBudgetCorretto.getMin());
@@ -55,14 +55,14 @@ class TestAcquisto {
 
     @Test
     void testToString() {
-        // Verifica che il metodo toString() restituisca la stringa corretta
+        // Verifica metodo toString()
         String expectedString = "Ricerca: Annuncio 1\n\tDescrizione dell'annuncio\n\tBudget: 500,00-1000,00 EUR\n\tChiavi:chiave2,chiave1\n\tDi: Giovanni\n";
         assertEquals(expectedString, acquistoValido.toString());
     }
 
     @Test
     void testGetter() {
-        // Verifica che i getter restituiscano i valori corretti
+        // Verifica i getter
         assertEquals("Annuncio 1", acquistoValido.getNome());
         assertEquals("Descrizione dell'annuncio", acquistoValido.getDescrizione());
         assertEquals(proprietario, acquistoValido.getProprietario());
@@ -72,7 +72,6 @@ class TestAcquisto {
 
     @Test
     void testIsProprietario() {
-        // Verifica che il metodo isProprietario funzioni correttamente
         assertTrue(acquistoValido.isProprietario(proprietario));
     }
 }

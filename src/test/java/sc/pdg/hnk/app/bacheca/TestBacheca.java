@@ -1,44 +1,43 @@
 package sc.pdg.hnk.app.bacheca;
 
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.*;
 import sc.pdg.hnk.app.annuncio.Acquisto;
 import sc.pdg.hnk.app.annuncio.Annuncio;
-import sc.pdg.hnk.app.annuncio.AnnuncioException;
 import sc.pdg.hnk.app.annuncio.Vendita;
-import sc.pdg.hnk.app.sessione.Sessione;
 import sc.pdg.hnk.app.utente.UserException;
 import sc.pdg.hnk.app.utente.Utente;
 
+import javax.xml.xpath.XPathEvaluationResult;
+import java.nio.charset.StandardCharsets;
+import java.nio.file.Files;
+import java.nio.file.OpenOption;
 import java.nio.file.Path;
+import java.nio.file.StandardOpenOption;
 import java.util.HashMap;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-import java.nio.file.Paths;
 import java.time.LocalDate;
 
+@TestMethodOrder(MethodOrderer.OrderAnnotation.class)
 public class TestBacheca {
-    private Sessione sessione ;
-    private Utente proprietario;
-    private Acquisto acquisto;
-    private Vendita vendita;
+    private static final Path fpSalvataggio = Path.of("./bacheca_test.dat");
+    private static final Utente proprietario;
+    private static final Acquisto acquisto;
+    private static final Vendita vendita;
+    private static final Vendita venditaScaduta;
 
-    @BeforeEach
-    void setUp() throws AnnuncioException, UserException {
+    static {
         // Eliminazione utenti
         Utente.setUserList(new HashMap<>());
 
-        Path path = Path.of("./bacheca_test.dat");
-        if(path.toFile().exists()){
-            path.toFile().delete();
-        }
-        this.sessione = new Sessione();
-        sessione.setFileBackup(path);
-
         // Creazione di un utente
-        proprietario = Utente.creaUtente("password123", "test@example.com", "Giovanni");
+        try {
+            proprietario = Utente.creaUtente("password123", "test@example.com", "Giovanni");
+        } catch (UserException e) {
+            throw new RuntimeException(e);
+        }
 
         // Creazione di un annuncio di tipo Acquisto
         acquisto = new Acquisto("Acquisto Laptop", "Cerco un laptop", proprietario, "laptop, usato", 1000.0, 500.0);
@@ -47,84 +46,117 @@ public class TestBacheca {
         vendita = new Vendita("Vendita Laptop", "Vendo un laptop", proprietario, "laptop, usato", 700.0, Vendita.Condizioni.USATO);
 
         // Creazione di un annuncio di tipo Vendita con scadenza
-        Vendita venditaScaduta = new Vendita("Vendita TV", "Vendo una TV", proprietario, "TV, usato", 300.0, LocalDate.now().minusDays(1), Vendita.Condizioni.MOLTO_USATO);
-
-        // Aggiunta degli annunci alla bacheca
-        Bacheca.aggiungiAnnuncio(acquisto);
-        Bacheca.aggiungiAnnuncio(vendita);
-        Bacheca.aggiungiAnnuncio(venditaScaduta);
+        venditaScaduta = new Vendita("Vendita TV", "Vendo una TV", proprietario, "TV, usato", 300.0, LocalDate.now().minusDays(1), Vendita.Condizioni.MOLTO_USATO);
     }
 
     @Test
-    void testAggiungiAnnuncioVendita() {
-        // Verifica che l'annuncio venga aggiunto correttamente alla bacheca
-        List<Annuncio> bacheca = Bacheca.getBacheca();
-        bacheca.forEach(System.out::println);
-        assertEquals(3, bacheca.size());
+    @Order(1)
+    void testAggiungiVendita() {
+        //Verifica che l'aggiunta dell'annuncio avvenga correttamente
+        assertNull(Bacheca.aggiungiAnnuncio(vendita));
+        assertNull(Bacheca.aggiungiAnnuncio(venditaScaduta));
+        assertEquals(2, Bacheca.getBacheca().size());
     }
 
     @Test
-    void testAggiungiAnnuncioAcquisto() {
-        // Verifica che l'aggiunta di un annuncio di tipo Acquisto ritorni la lista di annunci compatibili
+    @Order(2)
+    void testAggiungiAcquisto() {
+        // Verifica che l'aggiunta di un annuncio di tipo Acquisto ritorni gli annunci relativi
+        assertEquals(2, Bacheca.getBacheca().size());
+
         List<Annuncio> risultati = Bacheca.aggiungiAnnuncio(acquisto);
         assertNotNull(risultati);
         assertFalse(risultati.isEmpty());
+        assertEquals(1, risultati.size());
+
+        assertEquals(3, Bacheca.getBacheca().size());
     }
 
     @Test
+    @Order(3)
     void testPulisciBacheca() {
-
+        //Verifica la pulizia della bacheca
+        Bacheca.pulisciBacheca();
+        assertEquals(2, Bacheca.getBacheca().size());
     }
 
     @Test
+    @Order(4)
     void testFiltraProprietario() {
-        // Verifica che gli annunci vengano filtrati correttamente per proprietario
+        //Verifica che il proprietario dell'annuncio venga riconosciuto
+        assertEquals(2, Bacheca.getBacheca().size());
         List<Annuncio> risultati = Bacheca.filtraProprietario(Bacheca.getBacheca(), proprietario);
-        assertEquals(3, risultati.size()); // Tutti gli annunci appartengono al proprietario
+        assertEquals(2, risultati.size()); // Tutti gli annunci appartengono al proprietario
     }
 
     @Test
+    @Order(5)
     void testFiltraTipo() {
+        //Verifica che i filtri funzionino correttamente
+        assertEquals(2, Bacheca.getBacheca().size());
+        List<Annuncio> ricerca = Bacheca.filtraTipo(Bacheca.getBacheca(), Acquisto.class);
+        List<Annuncio> vendita = Bacheca.filtraTipo(Bacheca.getBacheca(), Vendita.class);
+        assertEquals(1, ricerca.size());
+        assertEquals(1, vendita.size());
     }
 
     @Test
+    @Order(6)
     void testRicercaChiavi() {
-
+        //Verifica che per le chiavi vengano restituiti solo gli annunci pertinenti
+        List<Annuncio> laptop = Bacheca.ricerca(Bacheca.getBacheca(), Annuncio.chiaviToLista("usato,laptop"));
+        assertEquals(2, laptop.size());
+        List<Annuncio> usati = Bacheca.ricerca(Bacheca.getBacheca(), Annuncio.chiaviToLista("usato"));
+        assertEquals(2, usati.size());
+        List<Annuncio> nuovo = Bacheca.ricerca(Bacheca.getBacheca(), Annuncio.chiaviToLista("nuovo"));
+        assertEquals(0 ,nuovo.size());
     }
 
     @Test
+    @Order(7)
     void testRimuoviAnnuncio() throws RemoveException {
         // Verifica che l'annuncio venga rimosso correttamente
         boolean rimosso = Bacheca.rimuoviAnnuncio(vendita.getIDAnnuncio(), proprietario);
         assertTrue(rimosso);
-        assertEquals(2, Bacheca.getBacheca().size()); // La bacheca ora dovrebbe avere 2 annunci
+        assertEquals(1, Bacheca.getBacheca().size()); // La bacheca ora dovrebbe avere 1 annuncio
 
+        // Rimettiamo l'annuncio
+        Bacheca.aggiungiAnnuncio(vendita);
         // Verifica che venga sollevata un'eccezione se l'utente non è il proprietario
         assertThrows(RemoveException.class, () -> Bacheca.rimuoviAnnuncio(vendita.getIDAnnuncio(), Utente.creaUtente("password456", "altro@example.com", "Marco")));
     }
 
     @Test
+    @Order(8)
     void testSalvataggioBacheca() throws BachecaIOException {
-        // Verifica che il salvataggio della bacheca in un file avvenga senza errori
-        Bacheca.salvataggio(Paths.get("bacheca_test.dat"));
+        // Verifica che il salvataggio avvenga senza errori
+        Bacheca.salvataggio(fpSalvataggio);
     }
 
     @Test
+    @Order(9)
     void testRecuperoBacheca() throws Exception {
-        // Verifica che il recupero della bacheca da un file avvenga senza errori
-        Path file = Paths.get("bacheca_test.dat");
-        Bacheca.salvataggio(file);
-        Bacheca.recupero(file);
-        assertEquals(3, Bacheca.getBacheca().size()); // Verifica che la bacheca recuperata abbia 3 annunci
+        Bacheca.recupero(fpSalvataggio);
+        assertEquals(2, Bacheca.getBacheca().size());
+
+        assertThrows(BachecaNotFoundException.class, () -> Bacheca.recupero(Path.of("./file_non_esistente_bacheca.dat")));
+
+        // Crea file non valido
+        Path parsingErrFile = Path.of("./test_lancio_parsing_error.dat");
+        parsingErrFile.toFile().createNewFile();
+        Files.writeString(parsingErrFile, "Contenuto_Del_File_Errato", StandardOpenOption.WRITE);
+        assertThrows(BachecaIOException.class, () -> Bacheca.recupero(parsingErrFile));
+        parsingErrFile.toFile().deleteOnExit();
     }
 
     @Test
+    @Order(10)
     void testIterazioneBacheca() {
-        // Verifica che l'iterazione sulla bacheca funzioni correttamente
+        // Verifica che l'iterazione sulla bacheca funzioni
         int count = 0;
         for (Annuncio ignored : Bacheca.getBacheca()) {
             count++;
         }
-        assertEquals(3, count); // Dovrebbero esserci 3 annunci nella bacheca
+        assertEquals(2, count);
     }
 }

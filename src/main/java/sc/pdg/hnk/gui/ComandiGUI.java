@@ -103,6 +103,9 @@ public class ComandiGUI {
         for(Annuncio a : annunci){
             bacheca.getPanelAnnunci().add(new AnnuncioPanel(a));
         }
+
+        bacheca.repaint();
+        bacheca.revalidate();
     }
 
     /**
@@ -116,6 +119,9 @@ public class ComandiGUI {
             panel.abilitaModifica();
             bacheca.getPanelAnnunci().add(panel);
         }
+
+        bacheca.repaint();
+        bacheca.revalidate();
     }
 
     /**

@@ -1,7 +1,3 @@
-/*
- * Created by JFormDesigner on Thu Jan 16 10:10:31 CET 2025
- */
-
 package sc.pdg.hnk.gui;
 
 import sc.pdg.hnk.app.annuncio.Acquisto;
@@ -13,14 +9,16 @@ import javax.swing.*;
 import javax.swing.GroupLayout;
 
 /**
- * @author Cristian
+ * Classe per il frame di ricerca
  */
 public class RicercaFrame extends JFrame {
     public RicercaFrame() {
         initComponents();
-        this.setResizable(false);
     }
 
+    /**
+     *Metodo per la ricerca dell'annuncio
+     */
     private void ricerca(ActionEvent e) {
         boolean vendita = this.venditaCheck.isSelected();
         boolean acquisto = this.acquistoCheck.isSelected();
@@ -73,14 +71,18 @@ public class RicercaFrame extends JFrame {
 
     }
 
+    /**
+     * Metodo per la gestione della chiusura della finestra
+     */
     private void chiusuraFinestra(WindowEvent e) {
         // Alla chiusura della finestra effettua reset della bacheca
         ComandiGUI.ricaricaBacheca();
     }
 
+    /**
+     * Inizializzazione componenti per il frame
+     */
     private void initComponents() {
-        // JFormDesigner - Component initialization - DO NOT MODIFY  //GEN-BEGIN:initComponents  @formatter:off
-        // Generated using JFormDesigner Educational license - Cristian Capraro
         chiaviLabel = new JLabel();
         chiaviField = new JTextField();
         tipoLabel = new JLabel();
@@ -93,6 +95,7 @@ public class RicercaFrame extends JFrame {
         setTitle("Bacheca - Ricerca");
         setMinimumSize(new Dimension(400, 155));
         setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
+        setResizable(false);
         addWindowListener(new WindowAdapter() {
             @Override
             public void windowClosed(WindowEvent e) {
@@ -163,11 +166,8 @@ public class RicercaFrame extends JFrame {
         );
         pack();
         setLocationRelativeTo(getOwner());
-        // JFormDesigner - End of component initialization  //GEN-END:initComponents  @formatter:on
     }
 
-    // JFormDesigner - Variables declaration - DO NOT MODIFY  //GEN-BEGIN:variables  @formatter:off
-    // Generated using JFormDesigner Educational license - Cristian Capraro
     private JLabel chiaviLabel;
     private JTextField chiaviField;
     private JLabel tipoLabel;
@@ -175,5 +175,4 @@ public class RicercaFrame extends JFrame {
     private JCheckBox acquistoCheck;
     private JButton ricercaButton;
     private JCheckBox mieiCheck;
-    // JFormDesigner - End of variables declaration  //GEN-END:variables  @formatter:on
 }

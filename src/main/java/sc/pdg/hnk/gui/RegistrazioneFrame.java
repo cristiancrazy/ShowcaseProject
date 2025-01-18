@@ -1,11 +1,6 @@
-/*
- * Created by JFormDesigner on Wed Jan 15 22:04:40 CET 2025
- */
-
 package sc.pdg.hnk.gui;
 
 import sc.pdg.hnk.app.utente.UserCreationException;
-import sc.pdg.hnk.app.utente.UserException;
 import sc.pdg.hnk.app.utente.UserListException;
 
 import java.awt.*;
@@ -14,22 +9,29 @@ import javax.swing.*;
 import javax.swing.GroupLayout;
 
 /**
- * @author Cristian
+ * Classe per il frame di registrazione
  */
 public class RegistrazioneFrame extends JFrame {
+    /**
+     * Costruttore che lancia il frame
+     */
     public RegistrazioneFrame() {
         initComponents();
-        this.setResizable(false);
     }
 
+    /**
+     * Permette di tornare alla pagina di login
+     */
     private void indietro(ActionEvent e) {
         // Riapri la sessione login
         new LoginFrame().setVisible(true);
         this.dispose();
     }
 
+    /**
+     * Registra l'utente
+     */
     private void registrazione(ActionEvent e) {
-        // Continua con il login utente e accesso alla bacheca
         try{
             ComandiGUI.faiRegistrazione(this.emailField.getText(), this.passwordField.getText(), this.usernameField.getText());
             JOptionPane.showMessageDialog(null, "Registrazione utente effettuata con successo.", "Account aggiunto", JOptionPane.INFORMATION_MESSAGE);
@@ -39,13 +41,18 @@ public class RegistrazioneFrame extends JFrame {
         }
     }
 
+    /**
+     * Metodo che gestisce la chiusura della finestra aprendo un nuovo frame per il login
+     * @param e
+     */
     private void chiusuraFinestra(WindowEvent e) {
         new LoginFrame().setVisible(true);
     }
 
+    /**
+     * Inizializza i componenti del frame
+     */
     private void initComponents() {
-        // JFormDesigner - Component initialization - DO NOT MODIFY  //GEN-BEGIN:initComponents  @formatter:off
-        // Generated using JFormDesigner Educational license - Cristian Capraro
         benvenutoLabel = new JLabel();
         usernameField = new JTextField();
         emailField = new JTextField();
@@ -65,6 +72,7 @@ public class RegistrazioneFrame extends JFrame {
                 chiusuraFinestra(e);
             }
         });
+        setResizable(false);
         var contentPane = getContentPane();
 
         //---- benvenutoLabel ----
@@ -82,11 +90,11 @@ public class RegistrazioneFrame extends JFrame {
 
         //---- registrazioneButton ----
         registrazioneButton.setText("Registrati");
-        registrazioneButton.addActionListener(e -> registrazione(e));
+        registrazioneButton.addActionListener(this::registrazione);
 
         //---- indietroButton ----
         indietroButton.setText("Torna indietro");
-        indietroButton.addActionListener(e -> indietro(e));
+        indietroButton.addActionListener(this::indietro);
 
         GroupLayout contentPaneLayout = new GroupLayout(contentPane);
         contentPane.setLayout(contentPaneLayout);
@@ -133,11 +141,8 @@ public class RegistrazioneFrame extends JFrame {
         );
         pack();
         setLocationRelativeTo(getOwner());
-        // JFormDesigner - End of component initialization  //GEN-END:initComponents  @formatter:on
     }
 
-    // JFormDesigner - Variables declaration - DO NOT MODIFY  //GEN-BEGIN:variables  @formatter:off
-    // Generated using JFormDesigner Educational license - Cristian Capraro
     private JLabel benvenutoLabel;
     private JTextField usernameField;
     private JTextField emailField;
@@ -147,5 +152,4 @@ public class RegistrazioneFrame extends JFrame {
     private JLabel passwordLabel;
     private JButton registrazioneButton;
     private JButton indietroButton;
-    // JFormDesigner - End of variables declaration  //GEN-END:variables  @formatter:on
 }

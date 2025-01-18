@@ -12,20 +12,34 @@ import sc.pdg.hnk.app.utente.UserListException;
 import sc.pdg.hnk.app.utente.Utente;
 
 import javax.swing.*;
+import java.nio.file.Path;
 import java.util.List;
 
 public class ComandiGUI {
     private static final Sessione sessione = new Sessione();
     private static BachecaFrame bacheca = new BachecaFrame();
 
+    /**
+     * Carica da file dal path corrente e lancia la GUI
+     */
     public static void lanciaGUI(){
         load();
         new LoginFrame().setVisible(true);
     }
 
-    ComandiGUI(){
-
+    /**
+     *  Carica da file dal path specificato e lancia la GUI
+     */
+    public static void lanciaGUI(Path fileSalvataggio){
+        sessione.setFileBackup(fileSalvataggio);
+        load();
+        new LoginFrame().setVisible(true);
     }
+
+    /**
+     * Costruttore vuoto
+     */
+    private ComandiGUI(){ }
 
     /**
      *  Caricamento bacheca e lista utenti da file
@@ -89,8 +103,6 @@ public class ComandiGUI {
         for(Annuncio a : annunci){
             bacheca.getPanelAnnunci().add(new AnnuncioPanel(a));
         }
-        //bacheca.repaint();
-        //bacheca.revalidate();
     }
 
     /**
@@ -104,8 +116,6 @@ public class ComandiGUI {
             panel.abilitaModifica();
             bacheca.getPanelAnnunci().add(panel);
         }
-        //bacheca.repaint();
-        //bacheca.revalidate();
     }
 
     /**
@@ -224,7 +234,7 @@ public class ComandiGUI {
 
     /**
      * Ritorna l'utente della sessione
-     * @return
+     * @return ottiene l'utente corrente
      */
     static Utente getUtenteCorrente(){
         return sessione.getCurrentUser();

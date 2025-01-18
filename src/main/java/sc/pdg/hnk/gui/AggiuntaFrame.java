@@ -1,30 +1,21 @@
-/*
- * Created by JFormDesigner on Wed Jan 15 23:23:09 CET 2025
- */
-
 package sc.pdg.hnk.gui;
 
-import java.awt.*;
 import java.awt.event.*;
 
 import sc.pdg.hnk.app.annuncio.Acquisto;
-import sc.pdg.hnk.app.annuncio.Annuncio;
 import sc.pdg.hnk.app.annuncio.AnnuncioException;
 import sc.pdg.hnk.app.annuncio.Vendita;
-import sc.pdg.hnk.app.bacheca.Bacheca;
 import sc.pdg.hnk.app.utente.Utente;
 
 import javax.swing.*;
 import javax.swing.GroupLayout;
-import javax.swing.event.*;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
-import java.util.Arrays;
 import java.util.Objects;
 
 /**
- * @author Cristian
+ * Classe per il frame per l'aggiunta degli annunci
  */
 public class AggiuntaFrame extends JFrame {
 
@@ -35,6 +26,9 @@ public class AggiuntaFrame extends JFrame {
         }
     }
 
+    /**
+     * Disabilita o abilita i bottoni in base al tipo di annuncio
+     */
     private void venditaButton(ActionEvent e) {
         this.scadenzaField.setEnabled(true);
         this.prezzoField.setEnabled(true);
@@ -43,14 +37,20 @@ public class AggiuntaFrame extends JFrame {
         this.minField.setEnabled(false);
     }
 
-        private void acquistoButton(ActionEvent e) {
-            this.scadenzaField.setEnabled(false);
-            this.prezzoField.setEnabled(false);
-            this.statoComboBox.setEnabled(false);
-            this.maxField.setEnabled(true);
-            this.minField.setEnabled(true);
+    /**
+     * Disabilita o abilita i bottoni in base al tipo di annuncio
+     */
+    private void acquistoButton(ActionEvent e) {
+        this.scadenzaField.setEnabled(false);
+        this.prezzoField.setEnabled(false);
+        this.statoComboBox.setEnabled(false);
+        this.maxField.setEnabled(true);
+        this.minField.setEnabled(true);
     }
 
+    /**
+     * Recupera i dati per la creazione dell'annuncio
+     */
     private void inserisci(ActionEvent e) {
         if(this.venditaButton.isSelected()){
             String nome, descrizione, stato, prezzo, chiavi;
@@ -117,9 +117,10 @@ public class AggiuntaFrame extends JFrame {
 
     }
 
+    /**
+     * Inizializza i componenti del frame
+     */
     private void initComponents() {
-        // JFormDesigner - Component initialization - DO NOT MODIFY  //GEN-BEGIN:initComponents  @formatter:off
-        // Generated using JFormDesigner Educational license - Cristian Capraro
         tipologiaLabel = new JLabel();
         venditaButton = new JRadioButton();
         acquistoButton = new JRadioButton();
@@ -134,7 +135,7 @@ public class AggiuntaFrame extends JFrame {
         minField = new JTextField();
         minLabel = new JLabel();
         maxLabel = new JLabel();
-        statoComboBox = new JComboBox();
+        statoComboBox = new JComboBox<>();
         statoLabel = new JLabel();
         inserisciButton = new JButton();
         chiaviField = new JTextField();
@@ -152,11 +153,11 @@ public class AggiuntaFrame extends JFrame {
 
         //---- venditaButton ----
         venditaButton.setText("Vendita");
-        venditaButton.addActionListener(e -> venditaButton(e));
+        venditaButton.addActionListener(this::venditaButton);
 
         //---- acquistoButton ----
         acquistoButton.setText("Ricerca");
-        acquistoButton.addActionListener(e -> acquistoButton(e));
+        acquistoButton.addActionListener(this::acquistoButton);
 
         //---- nomeLabel ----
         nomeLabel.setText("Nome");
@@ -196,7 +197,7 @@ public class AggiuntaFrame extends JFrame {
 
         //---- inserisciButton ----
         inserisciButton.setText("Inserisci annuncio");
-        inserisciButton.addActionListener(e -> inserisci(e));
+        inserisciButton.addActionListener(this::inserisci);
 
         //---- chiaviLabel ----
         chiaviLabel.setText("Chiavi");
@@ -307,11 +308,8 @@ public class AggiuntaFrame extends JFrame {
         var tipologiaAnnuncioGroup = new ButtonGroup();
         tipologiaAnnuncioGroup.add(venditaButton);
         tipologiaAnnuncioGroup.add(acquistoButton);
-        // JFormDesigner - End of component initialization  //GEN-END:initComponents  @formatter:on
     }
 
-    // JFormDesigner - Variables declaration - DO NOT MODIFY  //GEN-BEGIN:variables  @formatter:off
-    // Generated using JFormDesigner Educational license - Cristian Capraro
     private JLabel tipologiaLabel;
     private JRadioButton venditaButton;
     private JRadioButton acquistoButton;
@@ -333,5 +331,4 @@ public class AggiuntaFrame extends JFrame {
     private JLabel chiaviLabel;
     private JTextField scadenzaField;
     private JLabel scadenzaLabel;
-    // JFormDesigner - End of variables declaration  //GEN-END:variables  @formatter:on
 }

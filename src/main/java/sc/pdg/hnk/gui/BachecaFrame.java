@@ -1,57 +1,72 @@
-/*
- * Created by JFormDesigner on Wed Jan 15 22:49:42 CET 2025
- */
-
 package sc.pdg.hnk.gui;
-
-import sc.pdg.hnk.app.bacheca.Bacheca;
 
 import java.awt.*;
 import java.awt.event.*;
 import javax.swing.*;
 
-/**
- * @author Cristian
- */
 public class BachecaFrame extends JFrame {
     private final AggiuntaFrame aggiunta = new AggiuntaFrame();
-    private final RicercaFrame   ricerca = new RicercaFrame();
+    private final RicercaFrame  ricerca = new RicercaFrame();
 
+    /**
+     * Richiama initComponent
+     */
     public BachecaFrame() {
         initComponents();
     }
 
+    /**
+     * rende visibile il form per aggiungere un annuncio
+     */
     private void aggiungiAnnuncio(ActionEvent e) {
         if(!aggiunta.isVisible()){
             aggiunta.setVisible(true);
-        };
+        }
     }
 
+    /**
+     *Rende visibile il form per la ricerca dell0'annuncio
+     */
     private void ricerca(ActionEvent e) {
         if(!this.ricerca.isVisible()){
             this.ricerca.setVisible(true);
         }
     }
 
+    /**
+     * Pulisce la bacheca
+     */
     private void pulisci(ActionEvent e) {
         ComandiGUI.pulisciBacheca();
     }
 
+    /**
+     * Salva la bacheca Su file
+     */
     private void salva(ActionEvent e) {
         ComandiGUI.store();
         JOptionPane.showMessageDialog(null, "Bacheca salvata su file.");
     }
 
+    /**
+     *Riavvia un nuova sessione
+     */
     private void logout(ActionEvent e) {
         this.dispose();
     }
 
+    /**
+     *Chiude la bacheca e predispone un nuovo login
+     */
     private void chiusuraFinestra(WindowEvent e) {
         // Salvataggio e logout
         ComandiGUI.faiLogout();
         new LoginFrame().setVisible(true);
     }
 
+    /**
+     *Blocca le funzioni della bacheca quando è in corso la modifica e le ripristina quando finisce
+     */
     private void modificaToggle(ActionEvent e) {
         if(rimuoviToggle.isSelected()){
             this.aggiungiButton.setEnabled(false);
@@ -68,9 +83,10 @@ public class BachecaFrame extends JFrame {
         }
     }
 
+    /**
+     * Inizializza i componenti della bacheca
+     */
     private void initComponents() {
-        // JFormDesigner - Component initialization - DO NOT MODIFY  //GEN-BEGIN:initComponents  @formatter:off
-        // Generated using JFormDesigner Educational license - Cristian Capraro
         toolbarBacheca = new JToolBar();
         aggiungiButton = new JButton();
         rimuoviToggle = new JToggleButton();
@@ -101,33 +117,33 @@ public class BachecaFrame extends JFrame {
 
             //---- aggiungiButton ----
             aggiungiButton.setText("Aggiungi");
-            aggiungiButton.addActionListener(e -> aggiungiAnnuncio(e));
+            aggiungiButton.addActionListener(this::aggiungiAnnuncio);
             toolbarBacheca.add(aggiungiButton);
 
             //---- rimuoviToggle ----
             rimuoviToggle.setText("Modifica");
-            rimuoviToggle.addActionListener(e -> modificaToggle(e));
+            rimuoviToggle.addActionListener(this::modificaToggle);
             toolbarBacheca.add(rimuoviToggle);
 
             //---- ricercaButton ----
             ricercaButton.setText("Ricerca");
-            ricercaButton.addActionListener(e -> ricerca(e));
+            ricercaButton.addActionListener(this::ricerca);
             toolbarBacheca.add(ricercaButton);
 
             //---- pulisciButton ----
             pulisciButton.setText("Pulisci");
-            pulisciButton.addActionListener(e -> pulisci(e));
+            pulisciButton.addActionListener(this::pulisci);
             toolbarBacheca.add(pulisciButton);
 
             //---- salvaButton ----
             salvaButton.setText("Salva");
-            salvaButton.addActionListener(e -> salva(e));
+            salvaButton.addActionListener(this::salva);
             toolbarBacheca.add(salvaButton);
             toolbarBacheca.add(spaziatore);
 
             //---- logoutButton ----
             logoutButton.setText("Logout");
-            logoutButton.addActionListener(e -> logout(e));
+            logoutButton.addActionListener(this::logout);
             toolbarBacheca.add(logoutButton);
         }
         contentPane.add(toolbarBacheca, BorderLayout.NORTH);
@@ -144,11 +160,8 @@ public class BachecaFrame extends JFrame {
         contentPane.add(scrollAnnunci, BorderLayout.CENTER);
         pack();
         setLocationRelativeTo(getOwner());
-        // JFormDesigner - End of component initialization  //GEN-END:initComponents  @formatter:on
     }
 
-    // JFormDesigner - Variables declaration - DO NOT MODIFY  //GEN-BEGIN:variables  @formatter:off
-    // Generated using JFormDesigner Educational license - Cristian Capraro
     private JToolBar toolbarBacheca;
     private JButton aggiungiButton;
     private JToggleButton rimuoviToggle;
@@ -159,8 +172,11 @@ public class BachecaFrame extends JFrame {
     private JButton logoutButton;
     private JScrollPane scrollAnnunci;
     private JPanel panelAnnunci;
-    // JFormDesigner - End of variables declaration  //GEN-END:variables  @formatter:on
 
+    /**
+     * Getter del pannello
+     * @return Pannello annunci
+     */
     public JPanel getPanelAnnunci() {
         return panelAnnunci;
     }

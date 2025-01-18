@@ -1,14 +1,9 @@
-/*
- * Created by JFormDesigner on Wed Jan 15 22:32:36 CET 2025
- */
-
 package sc.pdg.hnk.gui;
 
 import java.awt.event.*;
 import sc.pdg.hnk.app.annuncio.Acquisto;
 import sc.pdg.hnk.app.annuncio.Annuncio;
 import sc.pdg.hnk.app.annuncio.Vendita;
-import sc.pdg.hnk.app.bacheca.Bacheca;
 import sc.pdg.hnk.app.bacheca.RemoveException;
 
 import javax.swing.*;
@@ -18,16 +13,19 @@ import java.awt.*;
 import java.time.format.DateTimeFormatter;
 
 /**
- * @author Cristian
+ * Classe per il frame annuncio
  */
 public class AnnuncioPanel extends JPanel {
     private final Annuncio riferimento;
 
+    /**
+     * Costruttore che incapsula gli annunci
+     * @param annuncio Annuncio
+     */
     public AnnuncioPanel(Annuncio annuncio) {
         initComponents();
         // Parsing dell'annuncio
         this.riferimento = annuncio;
-        this.setBorder(new LineBorder(Color.BLACK));
         descrizioneField.setText(annuncio.getDescrizione());
         proprietarioLabel.setText("Di: " + annuncio.getProprietario().getNome());
         if(annuncio instanceof Vendita){
@@ -43,11 +41,17 @@ public class AnnuncioPanel extends JPanel {
         }
     }
 
+    /**
+     * Se viene abilitata la modifica si rendono visibili  i bottoni per l'eliminazione e aggiunta chiave
+     */
     public void abilitaModifica(){
         this.eliminaButton.setVisible(true);
         this.aggiungiChiaveButton.setVisible(true);
     }
 
+    /**
+     * Aggiunge le chiavi all'annuncio selezionato
+     */
     private void aggiungiChiave(ActionEvent e) {
         String chiave = JOptionPane.showInputDialog(null, "Aggiungi una nuova chiave all'annuncio selezionato", "Nuova chiave", JOptionPane.PLAIN_MESSAGE);
         if(chiave == null){
@@ -63,6 +67,9 @@ public class AnnuncioPanel extends JPanel {
         }
     }
 
+    /**
+     *Rimuove l'annuncio se è il proprietario
+     */
     private void elimina(ActionEvent e) {
         try{
             ComandiGUI.rimuoviAnnuncio(this.riferimento.getIDAnnuncio());
@@ -71,9 +78,10 @@ public class AnnuncioPanel extends JPanel {
         }
     }
 
+    /**
+     * Inizializza i componenti frame
+     */
     private void initComponents() {
-        // JFormDesigner - Component initialization - DO NOT MODIFY  //GEN-BEGIN:initComponents  @formatter:off
-        // Generated using JFormDesigner Educational license - Cristian Capraro
         nomeLabel = new JLabel();
         wrapperDescrizione = new JScrollPane();
         descrizioneField = new JTextPane();
@@ -85,6 +93,7 @@ public class AnnuncioPanel extends JPanel {
         aggiungiChiaveButton = new JButton();
 
         //======== this ========
+        setBorder(new LineBorder(Color.BLACK));
 
         //---- nomeLabel ----
         nomeLabel.setText("Nome");
@@ -115,12 +124,12 @@ public class AnnuncioPanel extends JPanel {
         //---- eliminaButton ----
         eliminaButton.setText("Elimina");
         eliminaButton.setVisible(false);
-        eliminaButton.addActionListener(e -> elimina(e));
+        eliminaButton.addActionListener(this::elimina);
 
         //---- aggiungiChiaveButton ----
         aggiungiChiaveButton.setText("Aggiungi chiave");
         aggiungiChiaveButton.setVisible(false);
-        aggiungiChiaveButton.addActionListener(e -> aggiungiChiave(e));
+        aggiungiChiaveButton.addActionListener(this::aggiungiChiave);
 
         GroupLayout layout = new GroupLayout(this);
         setLayout(layout);
@@ -169,11 +178,8 @@ public class AnnuncioPanel extends JPanel {
                             .addGap(0, 0, Short.MAX_VALUE)))
                     .addContainerGap())
         );
-        // JFormDesigner - End of component initialization  //GEN-END:initComponents  @formatter:on
     }
 
-    // JFormDesigner - Variables declaration - DO NOT MODIFY  //GEN-BEGIN:variables  @formatter:off
-    // Generated using JFormDesigner Educational license - Cristian Capraro
     private JLabel nomeLabel;
     private JScrollPane wrapperDescrizione;
     private JTextPane descrizioneField;
@@ -183,5 +189,4 @@ public class AnnuncioPanel extends JPanel {
     private JLabel prezzoLabel;
     private JButton eliminaButton;
     private JButton aggiungiChiaveButton;
-    // JFormDesigner - End of variables declaration  //GEN-END:variables  @formatter:on
 }

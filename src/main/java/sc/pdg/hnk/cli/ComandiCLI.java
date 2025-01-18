@@ -14,6 +14,7 @@ import sc.pdg.hnk.app.utente.UserException;
 import sc.pdg.hnk.app.utente.UserListException;
 import sc.pdg.hnk.app.utente.Utente;
 
+import java.nio.file.Path;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
@@ -56,6 +57,16 @@ public class ComandiCLI {
      * Costruttore della classe
      */
     public ComandiCLI(){
+        load(); /* Caricamento da file */
+        mostraMenuUtente(); /* Avvia menù utente */
+    }
+
+    /**
+     * Costruttore della classe
+     * @param fileSalvataggio path del file di salvataggio/caricamento bacheca
+     */
+    public ComandiCLI(Path fileSalvataggio){
+        sessione.setFileBackup(fileSalvataggio);
         load(); /* Caricamento da file */
         mostraMenuUtente(); /* Avvia menù utente */
     }

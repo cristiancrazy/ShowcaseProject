@@ -12,13 +12,16 @@ import javax.swing.*;
 import javax.swing.GroupLayout;
 
 /**
- * @author Cristian
+ * Classe per il frame di login
  */
 public class LoginFrame extends JFrame {
     public LoginFrame() {
         initComponents();
     }
 
+    /**
+     *Effettua il login e lancia la bacheca
+     */
     private void login(ActionEvent e) {
         // Effettua il login o gestisci eccezione utente
         try{
@@ -30,15 +33,19 @@ public class LoginFrame extends JFrame {
         }
     }
 
+    /**
+     *Lancia il frame di registrazione
+     */
     private void registrazione(ActionEvent e) {
         // Apertura del Frame di registrazione
         new RegistrazioneFrame().setVisible(true);
         this.dispose();
     }
 
+    /**
+     * Inizializza i componenti del frame
+     */
     private void initComponents() {
-        // JFormDesigner - Component initialization - DO NOT MODIFY  //GEN-BEGIN:initComponents  @formatter:off
-        // Generated using JFormDesigner Educational license - Cristian Capraro
         benvenutoLabel = new JLabel();
         emailLabel = new JLabel();
         passwordLabel = new JLabel();
@@ -49,12 +56,12 @@ public class LoginFrame extends JFrame {
 
         //======== this ========
         setTitle("Bacheca - Login");
-        setResizable(false);
         setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
         var contentPane = getContentPane();
+        setResizable(false);
 
         //---- benvenutoLabel ----
-        benvenutoLabel.setText("Per poter accedere alla bacheca \u00e8 necessario effettuare l'accesso:");
+        benvenutoLabel.setText("Per poter accedere alla bacheca è necessario effettuare l'accesso:");
         benvenutoLabel.setFont(benvenutoLabel.getFont().deriveFont(benvenutoLabel.getFont().getStyle() | Font.BOLD, benvenutoLabel.getFont().getSize() + 2f));
 
         //---- emailLabel ----
@@ -65,11 +72,11 @@ public class LoginFrame extends JFrame {
 
         //---- registrazioneButton ----
         registrazioneButton.setText("Registrazione");
-        registrazioneButton.addActionListener(e -> registrazione(e));
+        registrazioneButton.addActionListener(this::registrazione);
 
         //---- loginButton ----
         loginButton.setText("Login");
-        loginButton.addActionListener(e -> login(e));
+        loginButton.addActionListener(this::login);
 
         GroupLayout contentPaneLayout = new GroupLayout(contentPane);
         contentPane.setLayout(contentPaneLayout);
@@ -119,11 +126,8 @@ public class LoginFrame extends JFrame {
         );
         pack();
         setLocationRelativeTo(getOwner());
-        // JFormDesigner - End of component initialization  //GEN-END:initComponents  @formatter:on
     }
 
-    // JFormDesigner - Variables declaration - DO NOT MODIFY  //GEN-BEGIN:variables  @formatter:off
-    // Generated using JFormDesigner Educational license - Cristian Capraro
     private JLabel benvenutoLabel;
     private JLabel emailLabel;
     private JLabel passwordLabel;
@@ -131,5 +135,4 @@ public class LoginFrame extends JFrame {
     private JPasswordField passwordField;
     private JButton registrazioneButton;
     private JButton loginButton;
-    // JFormDesigner - End of variables declaration  //GEN-END:variables  @formatter:on
 }
